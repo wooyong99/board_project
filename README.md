@@ -18,9 +18,10 @@
 
 ### 간트차트
 
-<img width="653" alt="image" src="https://github.com/user-attachments/assets/d9acc2e5-5a7f-4b56-b759-aea15c5b5201">
+<img width="655" alt="image" src="https://github.com/user-attachments/assets/1f0cf58a-dc52-465e-8510-bf00dda9ff7e">
 
-<br>
+
+<br><br>
 
 ### 사용자 스토리
 
@@ -44,7 +45,7 @@
 | 관리자 페이지| 관리자로서 특정 회원을 조회하고 싶다.| ✅ |
 
 
-<br>
+<br><br>
 
   
 ### 요구사항
