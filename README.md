@@ -18,7 +18,8 @@
 
 ### 간트차트
 
-<img width="655" alt="image" src="https://github.com/user-attachments/assets/1f0cf58a-dc52-465e-8510-bf00dda9ff7e">
+<img width="645" alt="image" src="https://github.com/user-attachments/assets/4081b432-5a43-4063-a989-f272ca646443">
+
 
 
 <br><br>
