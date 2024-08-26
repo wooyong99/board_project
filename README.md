@@ -16,6 +16,12 @@
 
 <br>
 
+### 간트차트
+
+<img width="653" alt="image" src="https://github.com/user-attachments/assets/d9acc2e5-5a7f-4b56-b759-aea15c5b5201">
+
+<br>
+
 ### 사용자 스토리
 
 | 페이지 | 유저스토리 | 인증 | 작업 여부 |
