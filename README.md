@@ -62,7 +62,6 @@
 |   나는 게시글 작성자로서 게시글 내용을 수정하기 위해 게시글 수정을 하고 싶다.   | ✅  | 제목, 내용
 | 나는 게시글 작성자로서 잘못된 정보의 게시글을 삭제하기 위해 게시글 삭제 하고 싶다. | ✅  |
 |       나는 방문자로서 게시글을 공감하기 위해 게시글 좋아요 기능을 이용 하고 싶다.       | ✅  |
-|       나는 방문자로서 게시글을 좋아요를 취소하기 위해 게시글 좋아요 취소를 하고 싶다.       | ✅  |
 | 나는 회원 사용자로서 부적절한 게시글을 관리자가 검토할 수 있도록 신고하기 위해 게시글 작성자를 신고하고 싶다. | ✅ | |
 
 
@@ -87,7 +86,14 @@
 
 
 #### 비기능 요구사항
-<img width="664" alt="image" src="https://github.com/user-attachments/assets/97407c6e-1b84-4d93-83a4-55c1dd066dfe">
+<img width="666" alt="image" src="https://github.com/user-attachments/assets/3f8fbd0c-87a8-413b-a658-499ba78367da">
+
+
+<br><br>
+
+### ERD
+
+<img width="681" alt="image" src="https://github.com/user-attachments/assets/98fb7777-8a3c-481d-9a9f-c1cdceb559be">
 
 
 
