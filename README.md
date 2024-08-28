@@ -36,11 +36,13 @@
 #### 기능 요구사항
 
 
-<img width="700" alt="image" src="https://github.com/user-attachments/assets/62fb598e-b50f-43cf-90cb-e951be473911">
+<img width="701" alt="image" src="https://github.com/user-attachments/assets/046a455c-bd4b-4865-a84a-f2e263fdf351">
+
 
 
 #### 비기능 요구사항
-<img width="578" alt="image" src="https://github.com/user-attachments/assets/aa141c24-dd4c-46ed-84a3-07183ee974bf">
+<img width="579" alt="image" src="https://github.com/user-attachments/assets/d7d76535-1ca6-4244-9d66-b183cd36bf3e">
+
 
 
 
