@@ -37,6 +37,19 @@ public class PostController {
         return "posts/list";
     }
 
+    // 게시글 검색
+    @GetMapping("/search")
+    public String searchPost(@RequestParam(required = false, name = "keyword") String keyword,
+        @RequestParam(required = false, name = "categoryId") Long categoryId,
+        @PageableDefault Pageable pageable, Model model) {
+        Page<PostListResponse> posts = postService.search(keyword, categoryId, pageable);
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("category", categoryId);
+
+        return "posts/list";
+    }
+
     // 게시글 등록 페이지 이동
     @GetMapping("/registerForm")
     public String registerFreeBoardForm() {

@@ -20,7 +20,7 @@ public class CustomPostDaoImpl implements CustomPostDao {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<PostListResponse> findPostList(Long categoryId, Pageable pageable) {
+    public Page<PostListResponse> findPostList(Long categoryId, String keyword, Pageable pageable) {
         List<PostListResponse> fetch = queryFactory
             .select(
                 new QPostListResponse(
@@ -34,18 +34,19 @@ public class CustomPostDaoImpl implements CustomPostDao {
             .from(post)
             .orderBy(post.createdAt.desc())
             .where(
-                categoryIdEq(categoryId)
+                categoryIdEq(categoryId),
+                titleContains(keyword)
             )
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
 
-        long count = findPostListForCount(categoryId);
+        long count = findPostListForCount(categoryId, keyword);
 
         return new PageImpl<>(fetch, pageable, count);
     }
 
-    private long findPostListForCount(Long categoryId) {
+    private long findPostListForCount(Long categoryId, String keyword) {
         Long count = queryFactory
             .select(post.count())
             .from(post)
@@ -61,5 +62,9 @@ public class CustomPostDaoImpl implements CustomPostDao {
 
     private BooleanExpression categoryIdEq(Long categoryId) {
         return categoryId != null ? post.category.id.eq(categoryId) : null;
+    }
+
+    private BooleanExpression titleContains(String keyword) {
+        return keyword != null ? post.title.contains(keyword) : null;
     }
 }

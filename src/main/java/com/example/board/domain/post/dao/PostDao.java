@@ -13,5 +13,5 @@ public interface PostDao extends JpaRepository<Post, Long>, CustomPostDao {
     Page<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
     @Override
-    Page<PostListResponse> findPostList(Long categoryId, Pageable pageable);
+    Page<PostListResponse> findPostList(Long categoryId, String keyword, Pageable pageable);
 }

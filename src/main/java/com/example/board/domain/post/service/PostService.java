@@ -33,7 +33,12 @@ public class PostService {
     // 게시글 리스트 조회
     @Transactional(readOnly = true)
     public Page<PostListResponse> getPostList(Long categoryId, Pageable pageable) {
-        return postDao.findPostList(categoryId, pageable);
+        return postDao.findPostList(categoryId, null, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PostListResponse> search(String keyword, Long categoryId, Pageable pageable) {
+        return postDao.findPostList(categoryId, keyword, pageable);
     }
 
     // 게시글 단건 조회
@@ -58,7 +63,6 @@ public class PostService {
 
         postDao.save(post);
     }
-
 
     // 게시글 수정
     @Transactional
