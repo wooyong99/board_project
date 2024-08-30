@@ -1,6 +1,7 @@
 package com.example.board.domain.member.controller;
 
 import com.example.board.domain.member.dto.MemberInfoResponse;
+import com.example.board.domain.member.dto.NicknameUpdateRequest;
 import com.example.board.domain.member.dto.SignupRequest;
 import com.example.board.domain.member.service.MemberService;
 import java.security.Principal;
@@ -49,5 +50,19 @@ public class MemberController {
         model.addAttribute("memberInfo", memberInfo);
 
         return "members/mypage";
+    }
+
+    // 닉네임 변경 페이지 이동
+    @GetMapping("/updateNicknameForm")
+    public String updateNicknameForm() {
+        return "members/updateNicknameForm";
+    }
+
+    // 닉네임 변경
+    @PostMapping("/updateNickname")
+    public String updatePassowrd(NicknameUpdateRequest nicknameUpdateRequest, Principal principal) {
+        memberService.updateNickname(nicknameUpdateRequest, principal.getName());
+
+        return "redirect:/members/info";
     }
 }
