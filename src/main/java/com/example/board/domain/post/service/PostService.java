@@ -88,6 +88,16 @@ public class PostService {
         postDao.deleteById(postId);
     }
 
+    // 게시글 신고하기
+    @Transactional
+    public void declaration(Long postId) {
+        Post post = findPostById(postId);
+        postDao.deleteById(post.getId());
+        if (post.getMember().getRole().equals(MemberRoleEnum.USER)) {
+            post.getMember().updateBlockStatus(true);
+        }
+    }
+
     private Post findPostById(Long postId) {
         return postDao.findById(postId).orElseThrow(
             () -> new NotFoundPostException("존재하지 않는 게시글입니다.")
