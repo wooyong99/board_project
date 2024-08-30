@@ -60,6 +60,15 @@ public class CommentService {
         comment.setContent(request.getContent());
     }
 
+    @Transactional
+    public void declaration(Long postId, Long commentId) {
+        Comment comment = findCommentByIdAndPostId(commentId, postId);
+        commentDao.deleteById(comment.getId());
+        if (comment.getMember().getRole().equals(MemberRoleEnum.USER)) {
+            comment.getMember().updateBlockStatus(true);
+        }
+    }
+
     private Comment findCommentByIdAndPostId(Long commentId, Long postId) {
         return commentDao.findByIdAndPostId(commentId, postId).orElseThrow(
             () -> new NotFoundCommentException("존재하지 않는 댓글입니다.")

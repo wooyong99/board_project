@@ -43,4 +43,13 @@ public class CommentController {
         return "redirect:/posts/" + postId;
     }
 
+    // 댓글 신고하기
+    @PostMapping("/posts/{postId}/comments/{commentId}/declaration")
+    public String inquiryComment(@PathVariable(name = "postId") Long postId,
+        @PathVariable(name = "commentId") Long commentId) {
+        commentService.declaration(postId, commentId);
+
+        return "redirect:/posts/" + postId;
+    }
+
 }
