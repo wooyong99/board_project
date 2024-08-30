@@ -1,7 +1,9 @@
 package com.example.board.domain.member.controller;
 
+import com.example.board.domain.member.dto.MemberInfoResponse;
 import com.example.board.domain.member.dto.SignupRequest;
 import com.example.board.domain.member.service.MemberService;
+import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,5 +39,15 @@ public class MemberController {
             model.addAttribute("errorMessage", "\"" + errorMessage + "\"");
         }
         return "members/loginForm";
+    }
+
+    // 마이페이지
+    @GetMapping("/info")
+    public String memberInfo(Principal principal, Model model) {
+        MemberInfoResponse memberInfo = memberService.getMemberInfo(principal.getName());
+
+        model.addAttribute("memberInfo", memberInfo);
+
+        return "members/mypage";
     }
 }
