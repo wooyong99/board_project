@@ -67,4 +67,8 @@ public class Post extends BaseEntity {
             this.content = request.getContent();
         }
     }
+
+    public void increaseLike() {
+        this.likes++;
+    }
 }

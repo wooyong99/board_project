@@ -98,6 +98,13 @@ public class PostService {
         }
     }
 
+    // 게시글 좋아요
+    @Transactional
+    public void like(Long postId) {
+        Post post = findPostById(postId);
+        post.increaseLike();
+    }
+
     private Post findPostById(Long postId) {
         return postDao.findById(postId).orElseThrow(
             () -> new NotFoundPostException("존재하지 않는 게시글입니다.")

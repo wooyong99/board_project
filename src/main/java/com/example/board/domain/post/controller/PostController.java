@@ -108,4 +108,12 @@ public class PostController {
 
         return "redirect:/posts";
     }
+
+    // 게시글 좋아요
+    @PostMapping("{postId}/like")
+    public String likePost(@PathVariable(name = "postId") Long postId) {
+        postService.like(postId);
+
+        return "redirect:/posts/" + postId;
+    }
 }
