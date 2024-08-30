@@ -100,4 +100,12 @@ public class PostController {
 
         return "redirect:/posts";
     }
+
+    // 게시글 신고하기
+    @PostMapping("/{postId}/declaration")
+    public String inquiryPost(@PathVariable(name = "postId") Long postId) {
+        postService.declaration(postId);
+
+        return "redirect:/posts";
+    }
 }
