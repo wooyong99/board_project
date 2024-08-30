@@ -6,6 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface CustomPostDao {
 
-    Page<PostListResponse> findPostList(Long categoryId, Pageable pageable);
+    Page<PostListResponse> findPostList(Long categoryId, String keyword, Pageable pageable);
 
 }
