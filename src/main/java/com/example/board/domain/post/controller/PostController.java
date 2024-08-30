@@ -2,6 +2,7 @@ package com.example.board.domain.post.controller;
 
 import com.example.board.domain.post.dto.PostCreateRequest;
 import com.example.board.domain.post.dto.PostListResponse;
+import com.example.board.domain.post.dto.PostUpdateRequest;
 import com.example.board.domain.post.entity.Post;
 import com.example.board.domain.post.service.PostService;
 import java.security.Principal;
@@ -58,5 +59,24 @@ public class PostController {
         model.addAttribute("post", post);
 
         return "posts/detail";
+    }
+
+    // 게시글 수정 페이지 이동
+    @GetMapping("/{postId}/updateForm")
+    public String updateForm(@PathVariable(name = "postId") Long postId, Model model) {
+        Post post = postService.getPost(postId);
+
+        model.addAttribute("post", post);
+
+        return "posts/updateForm";
+    }
+
+    // 게시글 수정
+    @PostMapping("/{postId}/update")
+    public String updatePost(@PathVariable(name = "postId") Long postId,
+        PostUpdateRequest postUpdateRequest, Principal principal) {
+        postService.update(postId, postUpdateRequest, principal.getName());
+
+        return "redirect:/posts";
     }
 }
