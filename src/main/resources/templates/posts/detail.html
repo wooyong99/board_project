@@ -100,7 +100,8 @@
     <div class="flex justify-end gap-2 mt-2">
       <form th:action="@{/posts/{postId}/comments/modify(postId=${post.id})}" method="post"
             class="m-0">
-        <button class="btn btn-warning text-xs" type="submit"
+        <button class="btn btn-warning text-xs" type="button"
+                onclick="showEditForm('${comment.id}')"
                 th:disabled="${!(#authorization.expression('hasAuthority(''ADMIN'')') ||
 					                (#authorization.expr('isAuthenticated()') && comment.member != null &&
 					                #authentication.principal != null &&
@@ -127,6 +128,18 @@
 										                (#authorization.expr('isAuthenticated()') && comment.member != null &&
 										                #authentication.principal != null ))}">
           댓글 신고
+        </button>
+      </form>
+    </div>
+    <div id="editFormContainer-${comment.id}" style="display: none;">
+      <form
+          th:action="@{/posts/{postId}/comments/{commentId}/update(postId=${post.id}, commentId=${comment.id})}"
+          method="post">
+        <textarea name="content" class="form-control mt-3" rows="3"
+                  th:text="${comment.content}"></textarea>
+        <button class="btn btn-primary mt-2 text-xs" type="submit">수정 완료</button>
+        <button class="btn btn-secondary mt-2 text-xs" type="button"
+                onclick="hideEditForm('${comment.id}')">취소
         </button>
       </form>
     </div>
@@ -172,6 +185,19 @@
     } else {
       return false;
     }
+  }
+</script>
+<script>
+  function showEditForm(commentId) {
+    // 수정 폼을 표시하고, 수정 버튼을 숨김
+    document.getElementById('editFormContainer-' + commentId).style.display = 'block';
+    document.getElementById('commentEditForm').style.display = 'none';
+  }
+
+  function hideEditForm(commentId) {
+    // 수정 폼을 숨기고, 수정 버튼을 다시 표시
+    document.getElementById('editFormContainer-' + commentId).style.display = 'none';
+    document.getElementById('commentEditForm').style.display = 'block';
   }
 </script>
 </body>
