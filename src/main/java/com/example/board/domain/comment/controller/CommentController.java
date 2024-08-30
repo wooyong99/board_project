@@ -22,4 +22,14 @@ public class CommentController {
 
         return "redirect:/posts/" + postId;
     }
+
+    // 댓글 삭제
+    @PostMapping("/posts/{postId}/comments/{commentId}/delete")
+    public String deleteComment(@PathVariable(name = "postId") Long postId,
+        @PathVariable(name = "commentId") Long commentId, Principal principal) {
+        commentService.delete(postId, commentId, principal.getName());
+
+        return "redirect:/posts/" + postId;
+    }
+
 }

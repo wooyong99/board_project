@@ -5,8 +5,11 @@ import com.example.board.domain.comment.dto.CommentCreateRequest;
 import com.example.board.domain.comment.entity.Comment;
 import com.example.board.domain.member.dao.MemberDao;
 import com.example.board.domain.member.entity.Member;
+import com.example.board.domain.member.entity.MemberRoleEnum;
 import com.example.board.domain.post.dao.PostDao;
 import com.example.board.domain.post.entity.Post;
+import com.example.board.global.exception.AuthorizationException;
+import com.example.board.global.exception.NotFoundCommentException;
 import com.example.board.global.exception.NotFoundMemberException;
 import com.example.board.global.exception.NotFoundPostException;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +34,23 @@ public class CommentService {
             .member(member)
             .build();
         commentDao.save(comment);
+    }
+
+    @Transactional
+    public void delete(Long postId, Long commentId, String email) {
+        Member member = findMemberByEmail(email);
+        Comment comment = findCommentByIdAndPostId(commentId, postId);
+        if (!member.getEmail().equals(comment.getMember().getEmail()) && member.getRole()
+            .equals(MemberRoleEnum.USER)) {
+            throw new AuthorizationException("권한이 없습니다.");
+        }
+        commentDao.deleteById(comment.getId());
+    }
+
+    private Comment findCommentByIdAndPostId(Long commentId, Long postId) {
+        return commentDao.findByIdAndPostId(commentId, postId).orElseThrow(
+            () -> new NotFoundCommentException("존재하지 않는 댓글입니다.")
+        );
     }
 
     private Member findMemberByEmail(String email) {
