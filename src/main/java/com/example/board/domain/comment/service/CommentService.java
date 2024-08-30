@@ -2,6 +2,7 @@ package com.example.board.domain.comment.service;
 
 import com.example.board.domain.comment.dao.CommentDao;
 import com.example.board.domain.comment.dto.CommentCreateRequest;
+import com.example.board.domain.comment.dto.CommentUpdateRequest;
 import com.example.board.domain.comment.entity.Comment;
 import com.example.board.domain.member.dao.MemberDao;
 import com.example.board.domain.member.entity.Member;
@@ -45,6 +46,18 @@ public class CommentService {
             throw new AuthorizationException("권한이 없습니다.");
         }
         commentDao.deleteById(comment.getId());
+    }
+
+    @Transactional
+    public void update(Long postId, Long commentId, CommentUpdateRequest request,
+        String email) {
+        Member member = findMemberByEmail(email);
+        Comment comment = findCommentByIdAndPostId(commentId, postId);
+        if (!member.getEmail().equals(comment.getMember().getEmail()) && member.getRole()
+            .equals(MemberRoleEnum.USER)) {
+            throw new AuthorizationException("권한이 없습니다.");
+        }
+        comment.setContent(request.getContent());
     }
 
     private Comment findCommentByIdAndPostId(Long commentId, Long postId) {
