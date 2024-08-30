@@ -6,11 +6,14 @@ import com.example.board.domain.member.dao.MemberDao;
 import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.post.dao.PostDao;
 import com.example.board.domain.post.dto.PostCreateRequest;
+import com.example.board.domain.post.dto.PostListResponse;
 import com.example.board.domain.post.entity.Post;
 import com.example.board.global.exception.NotFoundCategoryException;
 import com.example.board.global.exception.NotFoundMemberException;
 import com.example.board.global.exception.NotFoundPostException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +26,12 @@ public class PostService {
     private final PostDao postDao;
 
     private final CategoryDao categoryDao;
+
+    // 게시글 리스트 조회
+    @Transactional(readOnly = true)
+    public Page<PostListResponse> getPostList(Long categoryId, Pageable pageable) {
+        return postDao.findPostList(categoryId, pageable);
+    }
 
     // 게시글 단건 조회
     @Transactional(readOnly = true)
