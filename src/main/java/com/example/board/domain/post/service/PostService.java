@@ -9,6 +9,7 @@ import com.example.board.domain.post.dto.PostCreateRequest;
 import com.example.board.domain.post.entity.Post;
 import com.example.board.global.exception.NotFoundCategoryException;
 import com.example.board.global.exception.NotFoundMemberException;
+import com.example.board.global.exception.NotFoundPostException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,13 @@ public class PostService {
     private final PostDao postDao;
 
     private final CategoryDao categoryDao;
+
+    // 게시글 단건 조회
+    @Transactional(readOnly = true)
+    public Post getPost(Long postId) {
+        Post post = findPostById(postId);
+        return post;
+    }
 
     // 게시글 저장
     @Transactional
@@ -37,6 +45,12 @@ public class PostService {
             .build();
 
         postDao.save(post);
+    }
+
+    private Post findPostById(Long postId) {
+        return postDao.findById(postId).orElseThrow(
+            () -> new NotFoundPostException("존재하지 않는 게시글입니다.")
+        );
     }
 
     private Member findMemberByEmail(String email) {

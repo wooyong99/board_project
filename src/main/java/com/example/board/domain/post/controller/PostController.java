@@ -1,11 +1,14 @@
 package com.example.board.domain.post.controller;
 
 import com.example.board.domain.post.dto.PostCreateRequest;
+import com.example.board.domain.post.entity.Post;
 import com.example.board.domain.post.service.PostService;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -30,4 +33,13 @@ public class PostController {
         return "redirect:/posts";
     }
 
+    // 게시글 상세보기
+    @GetMapping("/{postId}")
+    public String detailPost(@PathVariable(name = "postId") Long postId, Model model) {
+        Post post = postService.getPost(postId);
+
+        model.addAttribute("post", post);
+
+        return "posts/detail";
+    }
 }
