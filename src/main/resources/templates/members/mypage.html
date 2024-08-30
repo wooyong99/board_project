@@ -1,0 +1,65 @@
+<html>
+<head>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+        crossorigin="anonymous">
+  <link href="https://webfontworld.github.io/gmarket/GmarketSans.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face {
+      font-family: 'GmarketSansMedium';
+      src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    body {
+      font-family: 'GmarketSansMedium';
+    }
+
+  </style>
+  <title>[[${memberInfo.email}]] 마이페이지</title>
+</head>
+<body>
+<div class="container mx-auto flex flex-column gap-3 border-b-2 pb-3 px-4">
+  <div class="flex border-b-2 pl-5 pb-3 mt-4">
+    <h1 class="text-3xl flex items-center">[[${memberInfo.email}]] 사용자의 마이페이지</h1>
+  </div>
+  <div><span class="btn btn-primary">회원번호 </span> &nbsp;&nbsp; [[${memberInfo.memberId}]]</div>
+  <div><span class="btn btn-primary">닉네임 </span> &nbsp;&nbsp; [[${memberInfo.nickname}]]</div>
+  <div><span class="btn btn-primary">이메일</span> &nbsp;&nbsp; [[${memberInfo.email}]]</div>
+  <div><span class="btn btn-primary">권한</span> &nbsp;&nbsp;[[${memberInfo.role}]]</div>
+  <div class="justify-end">
+    <span class="btn btn-primary">생성일자</span>
+    &nbsp;&nbsp;[[${#temporals.format(memberInfo.createdAt, 'YYYY-MM-dd HH:mm')}]]
+  </div>
+</div>
+<div class="container mx-auto flex justify-end my-3">
+  <form th:action="@{/members/updateNicknameForm}"
+        method="get" class="m-0">
+    <button class="btn btn-danger" type="submit"
+            th:disabled="${!(#authorization.expression('hasAuthority(''ADMIN'')') ||
+	                                (#authorization.expr('isAuthenticated()') &&
+	                                #authentication.principal != null))}">
+      닉네임 변경
+    </button>
+  </form>
+  <form th:action="@{/members/updatePasswordForm}"
+        method="get" class="m-0">
+    <button class="btn btn-danger" type="submit"
+            th:disabled="${!(#authorization.expression('hasAuthority(''ADMIN'')') ||
+	                                (#authorization.expr('isAuthenticated()') &&
+	                                #authentication.principal != null))}">
+      비밀번호 변경
+    </button>
+  </form>
+  <form th:action="@{/posts}" method="get" class="m-0">
+    <button class="btn btn-primary" type="submit">
+      홈으로
+    </button>
+  </form>
+</div>
+
+</body>
+</html>
