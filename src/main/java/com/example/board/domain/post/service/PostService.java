@@ -72,6 +72,18 @@ public class PostService {
         post.update(request);
     }
 
+    // 게시글 삭제
+    @Transactional
+    public void delete(Long postId, String email) {
+        Member member = findMemberByEmail(email);
+        Post post = findPostById(postId);
+        if (!post.getMember().getEmail().equals(member.getEmail()) && member.getRole()
+            .equals(MemberRoleEnum.USER)) {
+            throw new AuthorizationException("권한이 없습니다.");
+        }
+        postDao.deleteById(postId);
+    }
+
     private Post findPostById(Long postId) {
         return postDao.findById(postId).orElseThrow(
             () -> new NotFoundPostException("존재하지 않는 게시글입니다.")
