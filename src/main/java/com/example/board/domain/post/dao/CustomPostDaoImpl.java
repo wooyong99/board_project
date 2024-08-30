@@ -1,8 +1,12 @@
 package com.example.board.domain.post.dao;
 
+import static com.example.board.domain.comment.entity.QComment.comment;
 import static com.example.board.domain.post.entity.QPost.post;
 
+import com.example.board.domain.comment.entity.Comment;
+import com.example.board.domain.post.dto.PostDetailResponse;
 import com.example.board.domain.post.dto.PostListResponse;
+import com.example.board.domain.post.dto.QPostDetailResponse;
 import com.example.board.domain.post.dto.QPostListResponse;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -18,6 +22,31 @@ import org.springframework.stereotype.Repository;
 public class CustomPostDaoImpl implements CustomPostDao {
 
     private final JPAQueryFactory queryFactory;
+
+    @Override
+    public PostDetailResponse findPost(Long postId) {
+        PostDetailResponse response = queryFactory
+            .select(
+                new QPostDetailResponse(
+                    post.id,
+                    post.title,
+                    post.content,
+                    post.createdAt,
+                    post.likes,
+                    post.category.name,
+                    post.member.email
+                )
+            ).from(post)
+            .where(post.id.eq(postId))
+            .fetchOne();
+
+        List<Comment> comments = queryFactory.selectFrom(comment)
+            .where(comment.post.id.eq(postId))
+            .fetch();
+
+        response.setComments(comments);
+        return response;
+    }
 
     @Override
     public Page<PostListResponse> findPostList(Long categoryId, String keyword, Pageable pageable) {
