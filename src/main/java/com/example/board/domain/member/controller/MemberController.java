@@ -5,6 +5,7 @@ import com.example.board.domain.member.dto.NicknameUpdateRequest;
 import com.example.board.domain.member.dto.PasswordUpdateRequest;
 import com.example.board.domain.member.dto.SignupRequest;
 import com.example.board.domain.member.service.MemberService;
+import jakarta.validation.Valid;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -29,7 +30,7 @@ public class MemberController {
 
     // 회원가입
     @PostMapping("/doSignup")
-    public String doSignup(SignupRequest signupRequest) {
+    public String doSignup(@Valid SignupRequest signupRequest) {
         memberService.signup(signupRequest, null);
         return "redirect:/posts";
     }
@@ -81,4 +82,11 @@ public class MemberController {
         return "redirect:/members/info";
     }
 
+    // 회원 탈퇴
+    @PostMapping("/delete")
+    public String deleteMember(Principal principal) {
+        memberService.delete(principal.getName());
+
+        return "redirect:/logout";  // 로그아웃 url로 이동
+    }
 }

@@ -66,4 +66,10 @@ public class MemberService {
             () -> new NotFoundMemberException("존재하지 않는 사용자입니다.")
         );
     }
+
+    @Transactional
+    public void delete(String email) {
+        Member member = findMemberByEmail(email);
+        memberDao.deleteById(member.getId());
+    }
 }
