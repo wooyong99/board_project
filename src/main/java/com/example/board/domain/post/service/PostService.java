@@ -23,6 +23,13 @@ public class PostService {
 
     private final CategoryDao categoryDao;
 
+    // 게시글 단건 조회
+    @Transactional(readOnly = true)
+    public Post getPost(Long postId) {
+        Post post = findPostById(postId);
+        return post;
+    }
+
     // 게시글 저장
     @Transactional
     public void save(PostCreateRequest request, String email) {
