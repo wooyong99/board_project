@@ -3,10 +3,13 @@ package com.example.board.domain.member.service;
 import com.example.board.domain.member.dao.MemberDao;
 import com.example.board.domain.member.dto.MemberInfoResponse;
 import com.example.board.domain.member.dto.NicknameUpdateRequest;
+import com.example.board.domain.member.dto.PasswordUpdateRequest;
 import com.example.board.domain.member.dto.SignupRequest;
 import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.member.entity.MemberRoleEnum;
 import com.example.board.global.exception.DuplicateMemberException;
+import com.example.board.global.exception.InconsistentNewPasswordException;
+import com.example.board.global.exception.InconsistentOriginPasswordException;
 import com.example.board.global.exception.NotFoundMemberException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,6 +41,18 @@ public class MemberService {
     public MemberInfoResponse getMemberInfo(String email) {
         Member member = findMemberByEmail(email);
         return member.toMemberInfoResponse();
+    }
+
+    @Transactional
+    public void updatePassword(PasswordUpdateRequest request, String email) {
+        Member member = findMemberByEmail(email);
+        if (!encoder.matches(request.getOriginPassword(), member.getPassword())) {
+            throw new InconsistentOriginPasswordException("기존 비밀번호가 일치하지 않습니다.");
+        }
+        if (!request.getNewPassword().equals(request.getNewPasswordConfirm())) {
+            throw new InconsistentNewPasswordException("변경할 비밀번호가 일치하지 않습니다.");
+        }
+        member.updatePassword(encoder.encode(request.getNewPassword()));
     }
 
     @Transactional

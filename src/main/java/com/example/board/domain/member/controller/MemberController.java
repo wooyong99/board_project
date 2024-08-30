@@ -2,6 +2,7 @@ package com.example.board.domain.member.controller;
 
 import com.example.board.domain.member.dto.MemberInfoResponse;
 import com.example.board.domain.member.dto.NicknameUpdateRequest;
+import com.example.board.domain.member.dto.PasswordUpdateRequest;
 import com.example.board.domain.member.dto.SignupRequest;
 import com.example.board.domain.member.service.MemberService;
 import java.security.Principal;
@@ -65,4 +66,19 @@ public class MemberController {
 
         return "redirect:/members/info";
     }
+
+    // 비밀번호 변경 페이지 이동
+    @GetMapping("/updatePasswordForm")
+    public String updatePasswordForm() {
+        return "members/updatePasswordForm";
+    }
+
+    // 비밀번호 변경
+    @PostMapping("/updatePassword")
+    public String updatePassowrd(PasswordUpdateRequest passwordUpdateRequest, Principal principal) {
+        memberService.updatePassword(passwordUpdateRequest, principal.getName());
+
+        return "redirect:/members/info";
+    }
+
 }
