@@ -75,7 +75,7 @@
       삭제하기
     </button>
   </form>
-  <form th:action="@{/posts/{postId}/inquiry(postId=${post.id})}"
+  <form th:action="@{/posts/{postId}/declaration(postId=${post.id})}"
         method="post" class="m-0">
     <button class="btn btn-success" type="submit"
             th:disabled="${!(#authorization.expression('hasAuthority(''ADMIN'')') ||
@@ -121,7 +121,7 @@
         </button>
       </form>
       <form
-          th:action="@{/posts/{postId}/comments/{commentId}/inquiry(postId=${post.id}, commentId=${comment.id})}"
+          th:action="@{/posts/{postId}/comments/{commentId}/declaration(postId=${post.id}, commentId=${comment.id})}"
           method="post" class="m-0">
         <button class="btn btn-success text-xs" type="submit"
                 th:disabled="${!(#authorization.expression('hasAuthority(''ADMIN'')') ||
