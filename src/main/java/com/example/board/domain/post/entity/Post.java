@@ -36,7 +36,7 @@ public class Post extends BaseEntity {
 
     @ColumnDefault("0")
     @Min(0)
-    private Long likes;
+    private long likes;
 
     @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
