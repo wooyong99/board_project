@@ -27,10 +27,10 @@
     <h1 class="text-3xl flex items-center">[[${post.id}]]번 게시글</h1>
     <div class="flex-grow"></div>
     <div class="flex items-center"><span class="badge text-bg-primary mr-2">카테고리</span>
-      [[${post.category.name}]]
+      [[${post.category}]]
     </div>
     <div class="flex items-center"><span class="badge text-bg-primary ml-3 mr-2">작성자</span>
-      [[${post.member.email}]]
+      [[${post.author}]]
     </div>
   </div>
 
@@ -41,15 +41,26 @@
     [[${#temporals.format(post.createdAt, 'YYYY-MM-dd HH:mm')}]]
   </div>
 
+  <div class="self-center">
+    <form th:action="@{/posts/{postId}/like(postId=${post.id})}" method="post" class="m-0">
+      <button class="btn btn-danger text-lg" type="submit"
+              th:disabled="${!(#authorization.expression('hasAuthority(''ADMIN'')') ||
+	                                (#authorization.expr('isAuthenticated()')&&
+	                                #authentication.principal != null))}">
+        좋아요 : [[${post.likes}]]
+      </button>
+    </form>
+  </div>
+
 
 </div>
 <div class="container mx-auto flex gap-3 justify-end my-4 items-center px-4">
   <form th:action="@{/posts/{postId}/updateForm(postId=${post.id})}" method="get" class="m-0">
     <button class="btn btn-warning" type="submit"
             th:disabled="${!(#authorization.expression('hasAuthority(''ADMIN'')') ||
-	                                (#authorization.expr('isAuthenticated()') && post.member != null &&
+	                                (#authorization.expr('isAuthenticated()') &&
 	                                #authentication.principal != null &&
-	                                post.member.email == #authentication.principal.username))}">
+	                                post.author == #authentication.principal.username))}">
       수정하기
     </button>
   </form>
@@ -57,9 +68,9 @@
         method="post" class="m-0">
     <button class="btn btn-danger" type="button"
             th:disabled="${!(#authorization.expression('hasAuthority(''ADMIN'')') ||
-	                                (#authorization.expr('isAuthenticated()') && post.member != null &&
+	                                (#authorization.expr('isAuthenticated()') &&
 	                                #authentication.principal != null &&
-	                                post.member.email == #authentication.principal.username))}"
+	                                post.author == #authentication.principal.username))}"
             onclick="validateBoardDelete();">
       삭제하기
     </button>
@@ -68,7 +79,7 @@
         method="post" class="m-0">
     <button class="btn btn-success" type="submit"
             th:disabled="${!(#authorization.expression('hasAuthority(''ADMIN'')') ||
-	                                (#authorization.expr('isAuthenticated()') && post.member != null &&
+	                                (#authorization.expr('isAuthenticated()') &&
 	                                #authentication.principal != null))}">
       게시글 신고
     </button>
