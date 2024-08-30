@@ -58,10 +58,12 @@
     <div class="flex-grow"></div>
     <form class=" flex w-50 mt-3 gap-3" th:action="@{/posts/search}" method="get">
       <input type="text" class="form-control" name="keyword" />
+      <input type="hidden" id="categoryId" name="categoryId" />
       <button class="btn btn-primary" type="submit">검색</button>
     </form>
     <div class="flex-grow"></div>
   </div>
+
   <div>
     <div class="flex justify-center border-b-2 bg-gray-200 py-2">
       <div class="w-2/12 flex justify-center">번호</div>
@@ -93,7 +95,16 @@
         <a class="page-link" th:href="@{/posts?page={posts.number + 1}&amp;type=${type}}">Next</a>
       </li>
     </ul>
-  </nav>>
+  </nav>
+</div>
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const categoryId = urlParams.get("categoryId");
+
+  if(categoryId){
+    document.getElementById('categoryId').value = categoryId;
+  }
+</script>
 </body>
 
 </html>
