@@ -7,6 +7,7 @@ import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.member.entity.MemberRoleEnum;
 import com.example.board.domain.post.dao.PostDao;
 import com.example.board.domain.post.dto.PostCreateRequest;
+import com.example.board.domain.post.dto.PostDetailResponse;
 import com.example.board.domain.post.dto.PostListResponse;
 import com.example.board.domain.post.dto.PostUpdateRequest;
 import com.example.board.domain.post.entity.Post;
@@ -43,9 +44,8 @@ public class PostService {
 
     // 게시글 단건 조회
     @Transactional(readOnly = true)
-    public Post getPost(Long postId) {
-        Post post = findPostById(postId);
-        return post;
+    public PostDetailResponse getPost(Long postId) {
+        return postDao.findPost(postId);
     }
 
     // 게시글 저장
