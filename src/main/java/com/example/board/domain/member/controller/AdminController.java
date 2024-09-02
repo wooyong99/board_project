@@ -12,6 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,5 +47,21 @@ public class AdminController {
         model.addAttribute("members", members);
 
         return "admins/memberList";
+    }
+
+    // 회원 차단
+    @PostMapping("/members/{memberId}/block")
+    public String blockMember(@PathVariable(name = "memberId") Long memberId) {
+        memberService.block(memberId, true);
+
+        return "redirect:/admins/search/members";
+    }
+
+    // 회원 차단 해제
+    @PostMapping("/members/{memberId}/unblock")
+    public String unblockMember(@PathVariable(name = "memberId") Long memberId) {
+        memberService.block(memberId, false);
+
+        return "redirect:/admins/search/members";
     }
 }

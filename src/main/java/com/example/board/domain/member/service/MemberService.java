@@ -78,4 +78,17 @@ public class MemberService {
     public Page<MemberInfoResponse> search(String keyword, Pageable pageable) {
         return memberDao.search(keyword, pageable);
     }
+
+
+    @Transactional
+    public void block(Long memberId, boolean isBlock) {
+        Member member = findMemberById(memberId);
+        member.updateBlockStatus(isBlock);
+    }
+
+    private Member findMemberById(Long memberId) {
+        return memberDao.findById(memberId).orElseThrow(
+            () -> new NotFoundMemberException("존재하지 않는 사용자입니다.")
+        );
+    }
 }
