@@ -10,6 +10,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -38,5 +39,12 @@ public class InquiryController {
         model.addAttribute("inquiries", inquiries);
 
         return "inquiries/list";
+    }
+
+    @PostMapping("/inquiry/{inquiryId}/delete")
+    public String deleteInquiry(@PathVariable(name = "inquiryId") Long inquiryId) {
+        inquiryService.delete(inquiryId);
+
+        return "redirect:/inquiry";
     }
 }
