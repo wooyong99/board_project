@@ -1,9 +1,14 @@
 package com.example.board.domain.inquiry.controller;
 
 import com.example.board.domain.inquiry.dto.InquiryCreateRequest;
+import com.example.board.domain.inquiry.entity.Inquiry;
 import com.example.board.domain.inquiry.service.InquiryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -26,4 +31,12 @@ public class InquiryController {
         return "members/loginForm";
     }
 
+    @GetMapping("/inquiry")
+    public String getInquiry(@PageableDefault Pageable pageable, Model model) {
+        Page<Inquiry> inquiries = inquiryService.findList(pageable);
+
+        model.addAttribute("inquiries", inquiries);
+
+        return "inquiries/list";
+    }
 }
