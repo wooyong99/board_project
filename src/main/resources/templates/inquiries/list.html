@@ -27,6 +27,9 @@
     <a href="/posts/registerForm" class="btn btn-primary">게시글 작성</a>
     <a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"
        href="/inquiry" class="btn btn-danger">문의 내역</a>
+    <a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"
+       href="/admins/search/members" class="btn btn-danger">사용자 검색</a>
+    <div class="flex-grow"></div>
     <div class="flex-grow"></div>
     <p class="flex items-center">안녕하세요, <span th:text="${#authentication.principal.username}"> 사용자</span>님!</p>
     <a href="/members/info" class="btn btn-primary">마이페이지</a>

@@ -50,6 +50,7 @@ public class SecurityConfig {
                 .requestMatchers("/posts/*delete").authenticated()
                 .requestMatchers(HttpMethod.GET, "/inquiry").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/inquiry/*/delete").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/admins/search/members").hasAuthority("ADMIN")
                 .anyRequest().permitAll()
             )
             .formLogin(form -> form

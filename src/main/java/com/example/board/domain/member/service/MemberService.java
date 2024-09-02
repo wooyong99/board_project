@@ -12,6 +12,8 @@ import com.example.board.global.exception.InconsistentNewPasswordException;
 import com.example.board.global.exception.InconsistentOriginPasswordException;
 import com.example.board.global.exception.NotFoundMemberException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,5 +73,9 @@ public class MemberService {
     public void delete(String email) {
         Member member = findMemberByEmail(email);
         memberDao.deleteById(member.getId());
+    }
+
+    public Page<MemberInfoResponse> search(String keyword, Pageable pageable) {
+        return memberDao.search(keyword, pageable);
     }
 }
