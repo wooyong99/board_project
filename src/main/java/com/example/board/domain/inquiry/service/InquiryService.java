@@ -6,8 +6,11 @@ import com.example.board.domain.inquiry.entity.Inquiry;
 import com.example.board.domain.member.dao.MemberDao;
 import com.example.board.domain.member.entity.Member;
 import com.example.board.global.exception.DuplicateInquiryException;
+import com.example.board.global.exception.NotFoundInquiryException;
 import com.example.board.global.exception.NotFoundMemberException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +26,7 @@ public class InquiryService {
     @Transactional
     public void register(InquiryCreateRequest request) {
         Member member = findMemberByEmail(request.getEmail());
-        if (encoder.matches(request.getPassword(), member.getPassword())) {
+        if (!encoder.matches(request.getPassword(), member.getPassword())) {
             throw new NotFoundMemberException("존재하지 않는 사용자입니다.");
         }
         if (!member.isBlock()) {
@@ -39,9 +42,27 @@ public class InquiryService {
         inquiryDao.save(inquiry);
     }
 
+    @Transactional
+    public void delete(Long inquiryId) {
+        updateMemberBlockStatus(inquiryId);
+        inquiryDao.deleteById(inquiryId);
+    }
+
+    @Transactional
+    public void updateMemberBlockStatus(Long inquiryId) {
+        Inquiry inquiry = inquiryDao.findById(inquiryId).orElseThrow(
+            () -> new NotFoundInquiryException("존재하지 않는 문의 내역입니다.")
+        );
+        inquiry.getMember().updateBlockStatus(false);
+    }
+
     private Member findMemberByEmail(String email) {
         return memberDao.findByEmail(email).orElseThrow(
             () -> new NotFoundMemberException("존재하지 않는 사용자입니다.")
         );
+    }
+
+    public Page<Inquiry> findList(Pageable pageable) {
+        return inquiryDao.findAllByOrderByCreatedAtDesc(pageable);
     }
 }
