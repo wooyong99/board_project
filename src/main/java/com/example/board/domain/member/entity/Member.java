@@ -56,6 +56,7 @@ public class Member extends BaseEntity {
             .email(this.email)
             .createdAt(this.getCreatedAt())
             .role(this.role)
+            .isBlock(this.isBlock)
             .build();
     }
 
