@@ -1,5 +1,6 @@
 package com.example.board.domain.inquiry.entity;
 
+import com.example.board.domain.inquiry.dto.InquiryDetailResponse;
 import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.model.BaseEntity;
 import jakarta.persistence.Column;
@@ -32,4 +33,12 @@ public class Inquiry extends BaseEntity {
         this.member = member;
     }
 
+    public InquiryDetailResponse toDetailResponse() {
+        return InquiryDetailResponse.builder()
+            .id(this.getId())
+            .content(this.content)
+            .createdAt(this.getCreatedAt())
+            .author(this.member.getEmail())
+            .build();
+    }
 }
