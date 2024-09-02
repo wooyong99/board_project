@@ -2,6 +2,8 @@ package com.example.board.domain.inquiry.service;
 
 import com.example.board.domain.inquiry.dao.InquiryDao;
 import com.example.board.domain.inquiry.dto.InquiryCreateRequest;
+import com.example.board.domain.inquiry.dto.InquiryDetailResponse;
+import com.example.board.domain.inquiry.dto.InquiryListResponse;
 import com.example.board.domain.inquiry.entity.Inquiry;
 import com.example.board.domain.member.dao.MemberDao;
 import com.example.board.domain.member.entity.Member;
@@ -60,7 +62,13 @@ public class InquiryService {
         );
     }
 
-    public Page<Inquiry> findList(Pageable pageable) {
-        return inquiryDao.findAllByOrderByCreatedAtDesc(pageable);
+    public Page<InquiryListResponse> findList(Pageable pageable) {
+        return inquiryDao.findList(pageable);
+    }
+
+    public InquiryDetailResponse findOne(Long id) {
+        return inquiryDao.findById(id).orElseThrow(
+            () -> new NotFoundInquiryException("존재하지 않는 문의입니다.")
+        ).toDetailResponse();
     }
 }

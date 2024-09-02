@@ -1,7 +1,8 @@
 package com.example.board.domain.inquiry.controller;
 
 import com.example.board.domain.inquiry.dto.InquiryCreateRequest;
-import com.example.board.domain.inquiry.entity.Inquiry;
+import com.example.board.domain.inquiry.dto.InquiryDetailResponse;
+import com.example.board.domain.inquiry.dto.InquiryListResponse;
 import com.example.board.domain.inquiry.service.InquiryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -34,11 +35,20 @@ public class InquiryController {
 
     @GetMapping("/inquiry")
     public String getInquiry(@PageableDefault Pageable pageable, Model model) {
-        Page<Inquiry> inquiries = inquiryService.findList(pageable);
+        Page<InquiryListResponse> inquiries = inquiryService.findList(pageable);
 
         model.addAttribute("inquiries", inquiries);
 
         return "inquiries/list";
+    }
+
+    @GetMapping("/inquiry/{inquiryId}")
+    public String getInquiry(@PathVariable(name = "inquiryId") Long inquiryId, Model model) {
+        InquiryDetailResponse inquiry = inquiryService.findOne(inquiryId);
+
+        model.addAttribute("inquiry", inquiry);
+
+        return "inquiries/detail";
     }
 
     @PostMapping("/inquiry/{inquiryId}/delete")
