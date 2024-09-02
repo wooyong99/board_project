@@ -8,6 +8,7 @@ import com.example.board.domain.member.entity.Member;
 import com.example.board.global.exception.DuplicateInquiryException;
 import com.example.board.global.exception.NotFoundInquiryException;
 import com.example.board.global.exception.NotFoundMemberException;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ public class InquiryService {
     private final InquiryDao inquiryDao;
     private final MemberDao memberDao;
     private final PasswordEncoder encoder;
+    private final EntityManager em;
 
     @Transactional
     public void register(InquiryCreateRequest request) {
@@ -44,15 +46,11 @@ public class InquiryService {
 
     @Transactional
     public void delete(Long inquiryId) {
-        updateMemberBlockStatus(inquiryId);
-        inquiryDao.deleteById(inquiryId);
-    }
-
-    @Transactional
-    public void updateMemberBlockStatus(Long inquiryId) {
         Inquiry inquiry = inquiryDao.findById(inquiryId).orElseThrow(
             () -> new NotFoundInquiryException("존재하지 않는 문의 내역입니다.")
         );
+        inquiryDao.delete(inquiry);
+        em.flush();
         inquiry.getMember().updateBlockStatus(false);
     }
 
