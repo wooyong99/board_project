@@ -24,11 +24,13 @@ public class AdminController {
 
     private final MemberService memberService;
 
+    // 회원가입 페이지 이동
     @GetMapping("/signupForm")
     public String singup() {
         return "admins/signupForm";
     }
 
+    // 회원가입 기능
     @PostMapping("/doSignup")
     public String doSignup(@Valid SignupRequest signupRequest) {
         memberService.signup(signupRequest, MemberRoleEnum.ADMIN);

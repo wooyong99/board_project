@@ -33,6 +33,7 @@ public class InquiryController {
         return "members/loginForm";
     }
 
+    // 문의 게시글 리스트 조회
     @GetMapping("/inquiry")
     public String getInquiry(@PageableDefault Pageable pageable, Model model) {
         Page<InquiryListResponse> inquiries = inquiryService.findList(pageable);
@@ -42,6 +43,7 @@ public class InquiryController {
         return "inquiries/list";
     }
 
+    // 문의 게시글 단건 조회
     @GetMapping("/inquiry/{inquiryId}")
     public String getInquiry(@PathVariable(name = "inquiryId") Long inquiryId, Model model) {
         InquiryDetailResponse inquiry = inquiryService.findOne(inquiryId);
@@ -51,6 +53,7 @@ public class InquiryController {
         return "inquiries/detail";
     }
 
+    // 문의 게시글 삭제
     @PostMapping("/inquiry/{inquiryId}/delete")
     public String deleteInquiry(@PathVariable(name = "inquiryId") Long inquiryId) {
         inquiryService.delete(inquiryId);
