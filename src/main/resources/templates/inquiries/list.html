@@ -47,26 +47,33 @@
   </div>
   <div>
     <div class="flex justify-center border-b-2 bg-gray-200 py-2">
-      <div class="w-2/12 flex justify-center">문의 번호</div>
+      <div class="w-1/12 flex justify-center">문의 번호</div>
       <div class="flex-grow flex justify-center border-x-2">회원 닉네임</div>
       <div class="flex-grow flex justify-center border-x-2">회원 이메일</div>
-      <div class="w-3/12 flex justify-center">차단 날짜</div>
-      <div class="w-3/12 flex justify-center">차단 해제</div>
+      <div class="w-2/12 flex justify-center">차단 날짜</div>
+      <div class="w-1/12 flex justify-center">사용자 차단여부</div>
+      <div class="w-2/12 flex justify-center">상세보기</div>
     </div>
 
     <div th:each="inquiry, iterStat : ${inquiries.content}" class="flex justify-center border-b-2 py-2 hover:bg-gray-100 hover:cursor-pointer">
-      <div th:text="${inquiry.id}" class="w-2/12 flex justify-center"></div>
+      <div th:text="${inquiry.id}" class="w-1/12 flex justify-center"></div>
       <div class="flex-grow flex justify-center items-center border-x-2">
-        <a th:href="@{|/inquiry/${inquiry.id}|}" th:text="${inquiry.member.nickname}"></a>
+        <a th:href="@{|/inquiry/${inquiry.id}|}" th:text="${inquiry.nickname}"></a>
       </div>
       <div class="flex-grow flex justify-center items-center border-x-2">
-        <a th:href="@{|/inquiry/${inquiry.id}|}" th:text="${inquiry.member.email}"></a>
+        <a th:href="@{|/inquiry/${inquiry.id}|}" th:text="${inquiry.email}"></a>
       </div>
-      <div class="w-3/12 flex justify-center items-center" th:text="${#temporals.format(inquiry.createdAt,'YYYY-MM-dd')}"></div>
-      <div class="w-3/12 flex justify-center items-center">
-        <form th:action="@{|/inquiry/${inquiry.id}/delete|}" method="post" class="m-0">
+      <div class="w-2/12 flex justify-center items-center" th:text="${#temporals.format(inquiry.createdAt,'YYYY-MM-dd')}"></div>
+      <div class="w-1/12 flex justify-center items-center">
+        <span
+            th:classappend="${inquiry.isAuthorBlock} ? 'btn btn-danger' : 'btn btn-success'">
+            <span th:text="${inquiry.isAuthorBlock} ? '차단 O' : '차단 X'"></span>
+        </span>
+      </div>
+      <div class="w-2/12 flex justify-center items-center">
+        <form th:action="@{|/inquiry/${inquiry.id}|}" method="get" class="m-0">
           <button class="btn btn-primary" type="submit">
-            차단 해제
+            상세보기
           </button>
         </form>
       </div>

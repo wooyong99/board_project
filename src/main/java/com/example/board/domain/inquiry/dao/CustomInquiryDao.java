@@ -1,14 +1,11 @@
 package com.example.board.domain.inquiry.dao;
 
 import com.example.board.domain.inquiry.dto.InquiryListResponse;
-import com.example.board.domain.inquiry.entity.Inquiry;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface InquiryDao extends JpaRepository<Inquiry, Long>, CustomInquiryDao {
-
-    boolean existsByMemberId(Long id);
+public interface CustomInquiryDao {
 
     Page<InquiryListResponse> findList(Pageable pageable);
+
 }
