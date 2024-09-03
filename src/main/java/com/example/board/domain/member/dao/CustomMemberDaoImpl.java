@@ -37,7 +37,8 @@ public class CustomMemberDaoImpl implements CustomMemberDao {
             .from(member)
             .where(
                 member.role.eq(MemberRoleEnum.USER),
-                emailContains(keyword)
+                emailContains(keyword),
+                member.isDeleted.isFalse()
             )
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
@@ -51,7 +52,10 @@ public class CustomMemberDaoImpl implements CustomMemberDao {
     private long searchForCount() {
         Long count = queryFactory.select(member.count())
             .from(member)
-            .where(member.role.eq(MemberRoleEnum.USER))
+            .where(
+                member.role.eq(MemberRoleEnum.USER),
+                member.isDeleted.isFalse()
+            )
             .fetchOne();
 
         if (count == null) {

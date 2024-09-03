@@ -15,14 +15,14 @@ public class PostListResponse {
 
     private LocalDateTime createdAt;
 
-    private Integer commentSize;
+    private Long commentSize;
 
     public PostListResponse() {
     }
 
     @QueryProjection
     public PostListResponse(Long id, String title, String content, LocalDateTime createdAt,
-        Integer commentSize) {
+        Long commentSize) {
         this.id = id;
         this.title = title;
         this.content = content;

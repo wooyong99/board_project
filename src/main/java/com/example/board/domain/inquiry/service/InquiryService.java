@@ -42,7 +42,7 @@ public class InquiryService {
         if (!member.isBlock()) {
             throw new IllegalArgumentException("차단된 사용자가 아닙니다.");
         }
-        if (inquiryDao.existsByMemberId(member.getId())) {
+        if (inquiryDao.existsByMemberIdAndIsDeletedFalse(member.getId())) {
             throw new DuplicateInquiryException("이미 차단 해제 문의 내역이 존재합니다.");
         }
         Inquiry inquiry = Inquiry.builder()
@@ -54,16 +54,16 @@ public class InquiryService {
 
     @Transactional
     public void delete(Long inquiryId) {
-        Inquiry inquiry = inquiryDao.findById(inquiryId).orElseThrow(
+        Inquiry inquiry = inquiryDao.findByIdAndIsDeletedFalse(inquiryId).orElseThrow(
             () -> new NotFoundInquiryException("존재하지 않는 문의 내역입니다.")
         );
-        inquiryDao.delete(inquiry);
+        inquiry.setIsDeleted(true);     // Soft Delete 방식 적용
         em.flush();
         inquiry.getMember().updateBlockStatus(false);
     }
 
     private Member findMemberByEmail(String email) {
-        return memberDao.findByEmail(email).orElseThrow(
+        return memberDao.findByEmailAndIsDeletedFalse(email).orElseThrow(
             () -> new NotFoundMemberException("존재하지 않는 사용자입니다.")
         );
     }
@@ -73,7 +73,7 @@ public class InquiryService {
     }
 
     public InquiryDetailResponse findOne(Long id) {
-        return inquiryDao.findById(id).orElseThrow(
+        return inquiryDao.findByIdAndIsDeletedFalse(id).orElseThrow(
             () -> new NotFoundInquiryException("존재하지 않는 문의입니다.")
         ).toDetailResponse();
     }

@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -23,6 +24,9 @@ public class Inquiry extends BaseEntity {
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(unique = true, nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Member member;
+
+    @ColumnDefault("false")
+    private boolean isDeleted;
 
     protected Inquiry() {
     }
@@ -40,5 +44,9 @@ public class Inquiry extends BaseEntity {
             .createdAt(this.getCreatedAt())
             .author(this.member.getEmail())
             .build();
+    }
+
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

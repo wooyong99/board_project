@@ -9,6 +9,7 @@ import com.example.board.domain.post.dto.PostListResponse;
 import com.example.board.domain.post.dto.QPostDetailResponse;
 import com.example.board.domain.post.dto.QPostListResponse;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -37,11 +38,17 @@ public class CustomPostDaoImpl implements CustomPostDao {
                     post.member.email
                 )
             ).from(post)
-            .where(post.id.eq(postId))
+            .where(
+                post.id.eq(postId),
+                post.isDeleted.isFalse()
+            )
             .fetchOne();
 
         List<Comment> comments = queryFactory.selectFrom(comment)
-            .where(comment.post.id.eq(postId))
+            .where(
+                comment.post.id.eq(postId),
+                comment.isDeleted.isFalse()
+            )
             .fetch();
 
         response.setComments(comments);
@@ -57,14 +64,21 @@ public class CustomPostDaoImpl implements CustomPostDao {
                     post.title,
                     post.content,
                     post.createdAt,
-                    post.comments.size()
+                    JPAExpressions
+                        .select(comment.count())
+                        .from(comment)
+                        .where(
+                            comment.post.id.eq(post.id),
+                            comment.isDeleted.isFalse()
+                        )
                 )
             )
             .from(post)
             .orderBy(post.createdAt.desc())
             .where(
                 categoryIdEq(categoryId),
-                titleContains(keyword)
+                titleContains(keyword),
+                post.isDeleted.isFalse()
             )
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
@@ -79,7 +93,10 @@ public class CustomPostDaoImpl implements CustomPostDao {
         Long count = queryFactory
             .select(post.count())
             .from(post)
-            .where(categoryIdEq(categoryId))
+            .where(
+                categoryIdEq(categoryId),
+                post.isDeleted.isFalse()
+            )
             .fetchOne();
 
         if (count == null) {

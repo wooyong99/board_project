@@ -30,6 +30,9 @@ public class CustomInquiryDaoImpl implements CustomInquiryDao {
                 )
             )
             .from(inquiry)
+            .where(
+                inquiry.isDeleted.isFalse()
+            )
             .limit(pageable.getPageSize())
             .offset(pageable.getOffset())
             .orderBy(inquiry.createdAt.desc())
@@ -44,6 +47,7 @@ public class CustomInquiryDaoImpl implements CustomInquiryDao {
         Long count = queryFactory
             .select(inquiry.count())
             .from(inquiry)
+            .where(inquiry.isDeleted.isFalse())
             .fetchOne();
 
         if (count == null) {
