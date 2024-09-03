@@ -1,8 +1,8 @@
 package com.example.board.domain.comment.service;
 
 import com.example.board.domain.comment.dao.CommentDao;
-import com.example.board.domain.comment.dto.CommentCreateRequest;
-import com.example.board.domain.comment.dto.CommentUpdateRequest;
+import com.example.board.domain.comment.dto.CommentCreateServiceDto;
+import com.example.board.domain.comment.dto.CommentUpdateServiceDto;
 import com.example.board.domain.comment.entity.Comment;
 import com.example.board.domain.member.dao.MemberDao;
 import com.example.board.domain.member.entity.Member;
@@ -30,11 +30,11 @@ public class CommentService {
     }
 
     @Transactional
-    public void save(String email, Long postId, CommentCreateRequest request) {
+    public void save(String email, Long postId, CommentCreateServiceDto dto) {
         Post post = findPostById(postId);
         Member member = findMemberByEmail(email);
         Comment comment = Comment.builder()
-            .content(request.getContent())
+            .content(dto.getContent())
             .post(post)
             .member(member)
             .build();
@@ -53,7 +53,7 @@ public class CommentService {
     }
 
     @Transactional
-    public void update(Long postId, Long commentId, CommentUpdateRequest request,
+    public void update(Long postId, Long commentId, CommentUpdateServiceDto dto,
         String email) {
         Member member = findMemberByEmail(email);
         Comment comment = findCommentByIdAndPostId(commentId, postId);
@@ -61,7 +61,7 @@ public class CommentService {
             .equals(MemberRoleEnum.USER)) {
             throw new AuthorizationException("권한이 없습니다.");
         }
-        comment.setContent(request.getContent());
+        comment.setContent(dto.getContent());
     }
 
     @Transactional

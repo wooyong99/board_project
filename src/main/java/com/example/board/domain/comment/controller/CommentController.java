@@ -21,7 +21,7 @@ public class CommentController {
     @PostMapping("/posts/{postId}/comments")
     public String registerComment(@PathVariable(name = "postId") Long postId,
         CommentCreateRequest commentCreateRequest, Principal principal) {
-        commentService.save(principal.getName(), postId, commentCreateRequest);
+        commentService.save(principal.getName(), postId, commentCreateRequest.toServiceDto());
 
         return "redirect:/posts/" + postId;
     }
@@ -40,7 +40,8 @@ public class CommentController {
     public String updateComment(@PathVariable(name = "postId") Long postId,
         @PathVariable(name = "commentId") Long commentId,
         CommentUpdateRequest commentUpdateRequest, Principal principal) {
-        commentService.update(postId, commentId, commentUpdateRequest, principal.getName());
+        commentService.update(postId, commentId, commentUpdateRequest.toServiceDto(),
+            principal.getName());
 
         return "redirect:/posts/" + postId;
     }

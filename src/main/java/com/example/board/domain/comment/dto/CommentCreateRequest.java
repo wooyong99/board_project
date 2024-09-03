@@ -15,4 +15,10 @@ public class CommentCreateRequest {
     public CommentCreateRequest(String content) {
         this.content = content;
     }
+
+    public CommentCreateServiceDto toServiceDto() {
+        return CommentCreateServiceDto.builder()
+            .content(this.content)
+            .build();
+    }
 }

@@ -16,4 +16,9 @@ public class CommentUpdateRequest {
         this.content = content;
     }
 
+    public CommentUpdateServiceDto toServiceDto() {
+        return CommentUpdateServiceDto.builder()
+            .content(this.content)
+            .build();
+    }
 }
