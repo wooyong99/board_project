@@ -32,7 +32,7 @@ public class PostController {
         Page<PostListResponse> posts = postService.getPostList(categoryId, pageable);
 
         model.addAttribute("posts", posts);
-        model.addAttribute("category", categoryId);
+        model.addAttribute("categoryId", categoryId);
 
         return "posts/list";
     }
@@ -45,7 +45,7 @@ public class PostController {
         Page<PostListResponse> posts = postService.search(keyword, categoryId, pageable);
 
         model.addAttribute("posts", posts);
-        model.addAttribute("category", categoryId);
+        model.addAttribute("categoryId", categoryId);
 
         return "posts/list";
     }

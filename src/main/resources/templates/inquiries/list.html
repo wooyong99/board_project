@@ -83,15 +83,21 @@
   <!-- 페이지네이션 -->
   <nav class="container mx-auto flex justify-center my-10">
     <ul class="pagination">
-      </li>
       <li th:class="${inquiries.first} ? 'page-item disabled' : 'page-item'">
-        <a class="page-link" th:href="@{|/inquiry?page={inquiries.number-1}&amp;type=${type}|}">Prev</a>
+        <a class="page-link" th:href="@{|/inquiry?page=${inquiries.number-1}|}">Prev</a>
       </li>
-      <li th:each="pageNumber : ${#numbers.sequence(0, inquiries.totalPages - 1)}" th:class="${inquiries.number == pageNumber} ? 'page-item active' : 'page-item'">
-        <a class="page-link" th:href="@{|/inquiry?page=${pageNumber}${type == null ? '' : '&amp;type=' + type}|}" th:text="${pageNumber + 1}"></a>
+      <li th:if="${inquiries.totalPages > 0}"
+          th:each="pageNumber : ${#numbers.sequence(0, inquiries.totalPages - 1)}"
+          th:class="${inquiries.number == pageNumber} ? 'page-item active' : 'page-item'">
+        <a class="page-link"
+           th:href="@{|/inquiry?page=${pageNumber}${type == null ? '' : '&amp;type=' + type}|}"
+           th:text="${pageNumber + 1}"></a>
+      </li>
+      <li th:if="${inquiries.totalPages == 0}" class="page-item active">
+        <a class="page-link" href="#">1</a>
       </li>
       <li th:class="${inquiries.last} ? 'page-item disabled' : 'page-item'">
-        <a class="page-link" th:href="@{/inquiry?page={inquiries.number + 1}&amp;type=${type}}">Next</a>
+        <a class="page-link" th:href="@{|/inquiry?page=${inquiries.number + 1}|}">Next</a>
       </li>
     </ul>
   </nav>
