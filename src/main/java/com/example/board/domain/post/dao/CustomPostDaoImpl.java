@@ -37,7 +37,10 @@ public class CustomPostDaoImpl implements CustomPostDao {
                     post.member.email
                 )
             ).from(post)
-            .where(post.id.eq(postId))
+            .where(
+                post.id.eq(postId),
+                post.isDeleted.isFalse()
+            )
             .fetchOne();
 
         List<Comment> comments = queryFactory.selectFrom(comment)
@@ -64,7 +67,8 @@ public class CustomPostDaoImpl implements CustomPostDao {
             .orderBy(post.createdAt.desc())
             .where(
                 categoryIdEq(categoryId),
-                titleContains(keyword)
+                titleContains(keyword),
+                post.isDeleted.isFalse()
             )
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
@@ -79,7 +83,10 @@ public class CustomPostDaoImpl implements CustomPostDao {
         Long count = queryFactory
             .select(post.count())
             .from(post)
-            .where(categoryIdEq(categoryId))
+            .where(
+                categoryIdEq(categoryId),
+                post.isDeleted.isFalse()
+            )
             .fetchOne();
 
         if (count == null) {
