@@ -32,6 +32,7 @@ public class CustomInquiryDaoImpl implements CustomInquiryDao {
             .from(inquiry)
             .limit(pageable.getPageSize())
             .offset(pageable.getOffset())
+            .orderBy(inquiry.createdAt.desc())
             .fetch();
 
         long count = findListForCount();
