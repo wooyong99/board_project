@@ -116,7 +116,7 @@ public class PostService {
     }
 
     private Member findMemberByEmail(String email) {
-        return memberDao.findByEmail(email).orElseThrow(
+        return memberDao.findByEmailAndIsDeletedFalse(email).orElseThrow(
             () -> new NotFoundMemberException("존재하지 않는 사용자입니다.")
         );
     }

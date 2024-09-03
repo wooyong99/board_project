@@ -17,7 +17,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Member member = memberDao.findByEmail(username)
+        Member member = memberDao.findByEmailAndIsDeletedFalse(username)
             .orElseThrow(() -> new BadCredentialsException("이메일, 비밀번호를 확인해주세요."));
         if (member.isBlock()) {
             throw new BadCredentialsException("차단된 사용자입니다. 관리자에게 문의해주세요.");

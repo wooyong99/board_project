@@ -30,7 +30,7 @@ public class MemberService {
 
     @Transactional
     public void signup(SignupServiceDto dto, MemberRoleEnum role) {
-        if (memberDao.findByEmail(dto.getEmail()).isPresent()) {
+        if (memberDao.findByEmailAndIsDeletedFalse(dto.getEmail()).isPresent()) {
             throw new DuplicateMemberException("\"이미 존재하는 회원입니다.\"");
         }
         Member member = Member.builder()
@@ -67,7 +67,7 @@ public class MemberService {
     }
 
     private Member findMemberByEmail(String email) {
-        return memberDao.findByEmail(email).orElseThrow(
+        return memberDao.findByEmailAndIsDeletedFalse(email).orElseThrow(
             () -> new NotFoundMemberException("존재하지 않는 사용자입니다.")
         );
     }
@@ -75,7 +75,7 @@ public class MemberService {
     @Transactional
     public void delete(String email) {
         Member member = findMemberByEmail(email);
-        memberDao.deleteById(member.getId());
+        member.setIsDeleted(true);  // Soft Delete 방법 적용
     }
 
     public Page<MemberInfoResponse> search(String keyword, Pageable pageable) {

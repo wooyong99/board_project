@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberDao extends JpaRepository<Member, Long>, CustomMemberDao {
 
-    Optional<Member> findByEmail(String email);
+    Optional<Member> findByEmailAndIsDeletedFalse(String email);
 
     @Override
     Page<MemberInfoResponse> search(String keyword, Pageable pageable);

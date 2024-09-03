@@ -74,4 +74,8 @@ public class Member extends BaseEntity {
     public void updateNickname(String newNickname) {
         this.nickname = newNickname;
     }
+
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 }
