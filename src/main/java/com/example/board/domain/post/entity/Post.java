@@ -4,7 +4,7 @@ import com.example.board.domain.category.entity.Category;
 import com.example.board.domain.comment.entity.Comment;
 import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.model.BaseEntity;
-import com.example.board.domain.post.dto.PostUpdateRequest;
+import com.example.board.domain.post.dto.PostUpdateServiceDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
@@ -59,7 +59,7 @@ public class Post extends BaseEntity {
         this.category = category;
     }
 
-    public void update(PostUpdateRequest request) {
+    public void update(PostUpdateServiceDto request) {
         if (!request.getTitle().equals(this.title)) {
             this.title = request.getTitle();
         }

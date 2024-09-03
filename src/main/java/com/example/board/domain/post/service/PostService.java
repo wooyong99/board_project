@@ -6,10 +6,10 @@ import com.example.board.domain.member.dao.MemberDao;
 import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.member.entity.MemberRoleEnum;
 import com.example.board.domain.post.dao.PostDao;
-import com.example.board.domain.post.dto.PostCreateRequest;
+import com.example.board.domain.post.dto.PostCreateServiceDto;
 import com.example.board.domain.post.dto.PostDetailResponse;
 import com.example.board.domain.post.dto.PostListResponse;
-import com.example.board.domain.post.dto.PostUpdateRequest;
+import com.example.board.domain.post.dto.PostUpdateServiceDto;
 import com.example.board.domain.post.entity.Post;
 import com.example.board.global.exception.AuthorizationException;
 import com.example.board.global.exception.NotFoundCategoryException;
@@ -54,13 +54,13 @@ public class PostService {
 
     // 게시글 저장
     @Transactional
-    public void save(PostCreateRequest request, String email) {
+    public void save(PostCreateServiceDto dto, String email) {
         Member member = findMemberByEmail(email);
-        Category category = findCategoryById(request.getCategoryId());
+        Category category = findCategoryById(dto.getCategoryId());
 
         Post post = Post.builder()
-            .title(request.getTitle())
-            .content(request.getContent())
+            .title(dto.getTitle())
+            .content(dto.getContent())
             .member(member)
             .category(category)
             .build();
@@ -70,14 +70,14 @@ public class PostService {
 
     // 게시글 수정
     @Transactional
-    public void update(Long postId, PostUpdateRequest request, String email) {
+    public void update(Long postId, PostUpdateServiceDto dto, String email) {
         Member member = findMemberByEmail(email);
         Post post = findPostById(postId);
         if (!post.getMember().getEmail().equals(member.getEmail()) && member.getRole()
             .equals(MemberRoleEnum.USER)) {
             throw new AuthorizationException("권한이 없습니다.");
         }
-        post.update(request);
+        post.update(dto);
     }
 
     // 게시글 삭제

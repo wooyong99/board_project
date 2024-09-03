@@ -61,7 +61,7 @@ public class PostController {
     // 게시글 등록
     @PostMapping("/register")
     public String registerFreeBoard(PostCreateRequest postCreateRequest, Principal principal) {
-        postService.save(postCreateRequest, principal.getName());
+        postService.save(postCreateRequest.toServiceDto(), principal.getName());
 
         return "redirect:/posts";
     }
@@ -90,7 +90,7 @@ public class PostController {
     @PostMapping("/{postId}/update")
     public String updatePost(@PathVariable(name = "postId") Long postId,
         PostUpdateRequest postUpdateRequest, Principal principal) {
-        postService.update(postId, postUpdateRequest, principal.getName());
+        postService.update(postId, postUpdateRequest.toServiceDto(), principal.getName());
 
         return "redirect:/posts";
     }
