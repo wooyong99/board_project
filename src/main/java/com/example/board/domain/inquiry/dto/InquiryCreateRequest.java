@@ -19,4 +19,12 @@ public class InquiryCreateRequest {
     @NotBlank
     private String content;
 
+    public InquiryCreateRequest() {
+    }
+
+    public InquiryCreateRequest(String email, String password, String content) {
+        this.email = email;
+        this.password = password;
+        this.content = content;
+    }
 }

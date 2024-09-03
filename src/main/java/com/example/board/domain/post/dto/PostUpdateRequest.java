@@ -1,20 +1,20 @@
 package com.example.board.domain.post.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Data
 public class PostUpdateRequest {
 
     private String title;
 
     private String content;
+
+    public PostUpdateRequest() {
+    }
+
+    public PostUpdateRequest(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 
 }

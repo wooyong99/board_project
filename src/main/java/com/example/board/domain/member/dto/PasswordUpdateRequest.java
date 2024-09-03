@@ -19,4 +19,14 @@ public class PasswordUpdateRequest {
     @NotBlank
     private String newPasswordConfirm;
 
+    public PasswordUpdateRequest() {
+    }
+
+    public PasswordUpdateRequest(String originPassword, String newPassword,
+        String newPasswordConfirm) {
+        this.originPassword = originPassword;
+        this.newPassword = newPassword;
+        this.newPasswordConfirm = newPasswordConfirm;
+    }
+
 }

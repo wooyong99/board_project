@@ -1,20 +1,26 @@
 package com.example.board.domain.inquiry.dto;
 
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class InquiryDetailResponse {
 
     private Long id;
     private String content;
     private LocalDateTime createdAt;
     private String author;
+
+    public InquiryDetailResponse() {
+    }
+
+    @Builder
+    public InquiryDetailResponse(Long id, String content, LocalDateTime createdAt, String author) {
+        this.id = id;
+        this.content = content;
+        this.createdAt = createdAt;
+        this.author = author;
+    }
 
 }
