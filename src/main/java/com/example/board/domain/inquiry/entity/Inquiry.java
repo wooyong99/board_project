@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -24,6 +25,9 @@ public class Inquiry extends BaseEntity {
     @JoinColumn(unique = true, nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Member member;
 
+    @ColumnDefault("false")
+    private boolean isDeleted;
+    
     protected Inquiry() {
     }
 

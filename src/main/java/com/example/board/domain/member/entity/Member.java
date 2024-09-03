@@ -13,6 +13,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
 
 
 @Entity
@@ -33,6 +34,8 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private MemberRoleEnum role;
 
+    @ColumnDefault("false")
+    private boolean isDeleted;
 
     @OneToOne(mappedBy = "member", cascade = {CascadeType.PERSIST,
         CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)

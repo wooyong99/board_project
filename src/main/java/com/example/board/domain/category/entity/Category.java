@@ -9,12 +9,16 @@ import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
 public class Category extends BaseEntity {
 
     private String name;
+
+    @ColumnDefault("false")
+    private boolean isDeleted;
 
     @OneToMany(mappedBy = "category", cascade = {CascadeType.PERSIST,
         CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
