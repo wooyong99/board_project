@@ -27,7 +27,7 @@ public class Inquiry extends BaseEntity {
 
     @ColumnDefault("false")
     private boolean isDeleted;
-    
+
     protected Inquiry() {
     }
 
@@ -44,5 +44,9 @@ public class Inquiry extends BaseEntity {
             .createdAt(this.getCreatedAt())
             .author(this.member.getEmail())
             .build();
+    }
+
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }
