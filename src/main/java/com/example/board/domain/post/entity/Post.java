@@ -17,15 +17,12 @@ import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
 
     @Column(nullable = false)
@@ -49,6 +46,9 @@ public class Post extends BaseEntity {
     @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Category category;
+
+    protected Post() {
+    }
 
 
     @Builder

@@ -5,10 +5,8 @@ import com.querydsl.core.annotations.QueryProjection;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @Builder
 public class MemberInfoResponse {
 
@@ -18,6 +16,9 @@ public class MemberInfoResponse {
     private LocalDateTime createdAt;
     private MemberRoleEnum role;
     private boolean isBlock;
+
+    public MemberInfoResponse() {
+    }
 
     @QueryProjection
     public MemberInfoResponse(Long memberId, String nickname, String email, LocalDateTime createdAt,

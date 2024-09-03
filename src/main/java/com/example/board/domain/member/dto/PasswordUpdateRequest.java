@@ -1,13 +1,9 @@
 package com.example.board.domain.member.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class PasswordUpdateRequest {
 
     @NotBlank
@@ -18,5 +14,15 @@ public class PasswordUpdateRequest {
 
     @NotBlank
     private String newPasswordConfirm;
+
+    public PasswordUpdateRequest() {
+    }
+
+    public PasswordUpdateRequest(String originPassword, String newPassword,
+        String newPasswordConfirm) {
+        this.originPassword = originPassword;
+        this.newPassword = newPassword;
+        this.newPasswordConfirm = newPasswordConfirm;
+    }
 
 }

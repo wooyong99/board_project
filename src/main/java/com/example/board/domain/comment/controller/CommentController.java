@@ -4,16 +4,18 @@ import com.example.board.domain.comment.dto.CommentCreateRequest;
 import com.example.board.domain.comment.dto.CommentUpdateRequest;
 import com.example.board.domain.comment.service.CommentService;
 import java.security.Principal;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-@RequiredArgsConstructor
 public class CommentController {
 
     private final CommentService commentService;
+
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
+    }
 
     // 댓글 저장
     @PostMapping("/posts/{postId}/comments")

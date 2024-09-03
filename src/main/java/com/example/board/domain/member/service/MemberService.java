@@ -11,7 +11,6 @@ import com.example.board.global.exception.DuplicateMemberException;
 import com.example.board.global.exception.InconsistentNewPasswordException;
 import com.example.board.global.exception.InconsistentOriginPasswordException;
 import com.example.board.global.exception.NotFoundMemberException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,11 +18,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
 public class MemberService {
 
     private final MemberDao memberDao;
     private final PasswordEncoder encoder;
+
+    public MemberService(MemberDao memberDao, PasswordEncoder encoder) {
+        this.memberDao = memberDao;
+        this.encoder = encoder;
+    }
 
     @Transactional
     public void signup(SignupRequest request, MemberRoleEnum role) {

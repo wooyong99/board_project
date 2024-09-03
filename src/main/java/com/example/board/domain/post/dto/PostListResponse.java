@@ -3,10 +3,8 @@ package com.example.board.domain.post.dto;
 import com.querydsl.core.annotations.QueryProjection;
 import java.time.LocalDateTime;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 public class PostListResponse {
 
     private Long id;
@@ -18,6 +16,9 @@ public class PostListResponse {
     private LocalDateTime createdAt;
 
     private Integer commentSize;
+
+    public PostListResponse() {
+    }
 
     @QueryProjection
     public PostListResponse(Long id, String title, String content, LocalDateTime createdAt,

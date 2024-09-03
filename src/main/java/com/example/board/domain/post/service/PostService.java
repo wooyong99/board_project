@@ -15,14 +15,12 @@ import com.example.board.global.exception.AuthorizationException;
 import com.example.board.global.exception.NotFoundCategoryException;
 import com.example.board.global.exception.NotFoundMemberException;
 import com.example.board.global.exception.NotFoundPostException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
 public class PostService {
 
     private final MemberDao memberDao;
@@ -30,6 +28,12 @@ public class PostService {
     private final PostDao postDao;
 
     private final CategoryDao categoryDao;
+
+    public PostService(MemberDao memberdao, PostDao postDao, CategoryDao categoryDao) {
+        this.memberDao = memberdao;
+        this.postDao = postDao;
+        this.categoryDao = categoryDao;
+    }
 
     // 게시글 리스트 조회
     @Transactional(readOnly = true)

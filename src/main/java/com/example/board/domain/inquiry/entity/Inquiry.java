@@ -10,14 +10,11 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Inquiry extends BaseEntity {
 
     @Column(nullable = false, columnDefinition = "TEXT")
@@ -26,6 +23,9 @@ public class Inquiry extends BaseEntity {
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(unique = true, nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Member member;
+
+    protected Inquiry() {
+    }
 
     @Builder
     public Inquiry(String content, Member member) {

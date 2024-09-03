@@ -7,7 +7,6 @@ import com.example.board.domain.member.dto.SignupRequest;
 import com.example.board.domain.member.service.MemberService;
 import jakarta.validation.Valid;
 import java.security.Principal;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("/members")
 public class MemberController {
 
     private final MemberService memberService;
+
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
+    }
 
     // 회원가입 페이지 이동
     @GetMapping("/signupForm")

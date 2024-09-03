@@ -11,15 +11,12 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "members")
 public class Member extends BaseEntity {
 
@@ -40,6 +37,9 @@ public class Member extends BaseEntity {
     @OneToOne(mappedBy = "member", cascade = {CascadeType.PERSIST,
         CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
     private Inquiry inquiry;
+
+    protected Member() {
+    }
 
     @Builder
     public Member(String nickname, String email, String password, MemberRoleEnum role) {

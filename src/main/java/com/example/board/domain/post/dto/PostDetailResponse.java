@@ -5,10 +5,8 @@ import com.querydsl.core.annotations.QueryProjection;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 public class PostDetailResponse {
 
     private Long id;
@@ -19,6 +17,9 @@ public class PostDetailResponse {
     private String category;
     private String author;
     private List<Comment> comments;
+
+    public PostDetailResponse() {
+    }
 
     @QueryProjection
     public PostDetailResponse(Long id, String title, String content, LocalDateTime createdAt,
