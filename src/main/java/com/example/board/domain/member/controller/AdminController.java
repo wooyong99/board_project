@@ -5,7 +5,6 @@ import com.example.board.domain.member.dto.SignupRequest;
 import com.example.board.domain.member.entity.MemberRoleEnum;
 import com.example.board.domain.member.service.MemberService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,11 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("/admins")
 public class AdminController {
 
     private final MemberService memberService;
+
+    public AdminController(MemberService memberService) {
+        this.memberService = memberService;
+    }
 
     // 회원가입 페이지 이동
     @GetMapping("/signupForm")

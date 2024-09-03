@@ -11,7 +11,6 @@ import com.example.board.global.exception.DuplicateInquiryException;
 import com.example.board.global.exception.NotFoundInquiryException;
 import com.example.board.global.exception.NotFoundMemberException;
 import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,13 +18,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
 public class InquiryService {
 
     private final InquiryDao inquiryDao;
     private final MemberDao memberDao;
     private final PasswordEncoder encoder;
     private final EntityManager em;
+
+    public InquiryService(InquiryDao inquiryDao, MemberDao memberDao, PasswordEncoder encoder,
+        EntityManager em) {
+        this.inquiryDao = inquiryDao;
+        this.memberDao = memberDao;
+        this.encoder = encoder;
+        this.em = em;
+    }
 
     @Transactional
     public void register(InquiryCreateRequest request) {

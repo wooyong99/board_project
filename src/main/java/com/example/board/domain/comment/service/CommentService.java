@@ -13,17 +13,21 @@ import com.example.board.global.exception.AuthorizationException;
 import com.example.board.global.exception.NotFoundCommentException;
 import com.example.board.global.exception.NotFoundMemberException;
 import com.example.board.global.exception.NotFoundPostException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
 public class CommentService {
 
     private final MemberDao memberDao;
     private final PostDao postDao;
     private final CommentDao commentDao;
+
+    public CommentService(MemberDao memberDao, PostDao postDao, CommentDao commentDao) {
+        this.memberDao = memberDao;
+        this.postDao = postDao;
+        this.commentDao = commentDao;
+    }
 
     @Transactional
     public void save(String email, Long postId, CommentCreateRequest request) {

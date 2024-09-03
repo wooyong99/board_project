@@ -6,7 +6,6 @@ import com.example.board.domain.post.dto.PostListResponse;
 import com.example.board.domain.post.dto.PostUpdateRequest;
 import com.example.board.domain.post.service.PostService;
 import java.security.Principal;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -20,10 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/posts")
-@RequiredArgsConstructor
 public class PostController {
 
     private final PostService postService;
+
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
 
     // 게시글 리스트 조회
     @GetMapping

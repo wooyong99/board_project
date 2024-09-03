@@ -4,7 +4,6 @@ import com.example.board.domain.inquiry.dto.InquiryCreateRequest;
 import com.example.board.domain.inquiry.dto.InquiryDetailResponse;
 import com.example.board.domain.inquiry.dto.InquiryListResponse;
 import com.example.board.domain.inquiry.service.InquiryService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,10 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-@RequiredArgsConstructor
 public class InquiryController {
 
     private final InquiryService inquiryService;
+
+    public InquiryController(InquiryService inquiryService) {
+        this.inquiryService = inquiryService;
+    }
 
     // 차단 문의 페이지 이동
     @GetMapping("/inquiryForm")

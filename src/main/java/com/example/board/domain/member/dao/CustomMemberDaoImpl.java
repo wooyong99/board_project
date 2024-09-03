@@ -8,17 +8,19 @@ import com.example.board.domain.member.entity.MemberRoleEnum;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@RequiredArgsConstructor
 public class CustomMemberDaoImpl implements CustomMemberDao {
 
     private final JPAQueryFactory queryFactory;
+
+    public CustomMemberDaoImpl(JPAQueryFactory queryFactory) {
+        this.queryFactory = queryFactory;
+    }
 
     @Override
     public Page<MemberInfoResponse> search(String keyword, Pageable pageable) {
