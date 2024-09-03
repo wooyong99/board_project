@@ -35,7 +35,7 @@ public class AdminController {
     // 회원가입 기능
     @PostMapping("/doSignup")
     public String doSignup(@Valid SignupRequest signupRequest) {
-        memberService.signup(signupRequest, MemberRoleEnum.ADMIN);
+        memberService.signup(signupRequest.toServiceDto(), MemberRoleEnum.ADMIN);
 
         return "redirect:/posts";
     }

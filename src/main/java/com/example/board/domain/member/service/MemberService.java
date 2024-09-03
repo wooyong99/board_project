@@ -2,9 +2,9 @@ package com.example.board.domain.member.service;
 
 import com.example.board.domain.member.dao.MemberDao;
 import com.example.board.domain.member.dto.MemberInfoResponse;
-import com.example.board.domain.member.dto.NicknameUpdateRequest;
-import com.example.board.domain.member.dto.PasswordUpdateRequest;
-import com.example.board.domain.member.dto.SignupRequest;
+import com.example.board.domain.member.dto.NicknameUpdateServiceDto;
+import com.example.board.domain.member.dto.PasswordUpdateServiceDto;
+import com.example.board.domain.member.dto.SignupServiceDto;
 import com.example.board.domain.member.entity.Member;
 import com.example.board.domain.member.entity.MemberRoleEnum;
 import com.example.board.global.exception.DuplicateMemberException;
@@ -29,14 +29,14 @@ public class MemberService {
     }
 
     @Transactional
-    public void signup(SignupRequest request, MemberRoleEnum role) {
-        if (memberDao.findByEmail(request.getEmail()).isPresent()) {
+    public void signup(SignupServiceDto dto, MemberRoleEnum role) {
+        if (memberDao.findByEmail(dto.getEmail()).isPresent()) {
             throw new DuplicateMemberException("\"이미 존재하는 회원입니다.\"");
         }
         Member member = Member.builder()
-            .nickname(request.getNickname())
-            .email(request.getEmail())
-            .password(encoder.encode(request.getPassword()))
+            .nickname(dto.getNickname())
+            .email(dto.getEmail())
+            .password(encoder.encode(dto.getPassword()))
             .role(role == null ? MemberRoleEnum.USER : role)
             .build();
         memberDao.save(member);
@@ -49,21 +49,21 @@ public class MemberService {
     }
 
     @Transactional
-    public void updatePassword(PasswordUpdateRequest request, String email) {
+    public void updatePassword(PasswordUpdateServiceDto dto, String email) {
         Member member = findMemberByEmail(email);
-        if (!encoder.matches(request.getOriginPassword(), member.getPassword())) {
+        if (!encoder.matches(dto.getOriginPassword(), member.getPassword())) {
             throw new InconsistentOriginPasswordException("기존 비밀번호가 일치하지 않습니다.");
         }
-        if (!request.getNewPassword().equals(request.getNewPasswordConfirm())) {
+        if (!dto.getNewPassword().equals(dto.getNewPasswordConfirm())) {
             throw new InconsistentNewPasswordException("변경할 비밀번호가 일치하지 않습니다.");
         }
-        member.updatePassword(encoder.encode(request.getNewPassword()));
+        member.updatePassword(encoder.encode(dto.getNewPassword()));
     }
 
     @Transactional
-    public void updateNickname(NicknameUpdateRequest request, String email) {
+    public void updateNickname(NicknameUpdateServiceDto dto, String email) {
         Member member = findMemberByEmail(email);
-        member.updateNickname(request.getNewNickname());
+        member.updateNickname(dto.getNewNickname());
     }
 
     private Member findMemberByEmail(String email) {

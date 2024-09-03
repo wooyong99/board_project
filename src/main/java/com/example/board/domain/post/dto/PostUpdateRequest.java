@@ -17,4 +17,10 @@ public class PostUpdateRequest {
         this.content = content;
     }
 
+    public PostUpdateServiceDto toServiceDto() {
+        return PostUpdateServiceDto.builder()
+            .title(this.title)
+            .content(this.content)
+            .build();
+    }
 }

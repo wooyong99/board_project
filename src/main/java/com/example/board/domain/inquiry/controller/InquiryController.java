@@ -31,7 +31,7 @@ public class InquiryController {
     // 차단 문의
     @PostMapping("/inquiry")
     public String registerInquiry(InquiryCreateRequest inquiryCreateRequest) {
-        inquiryService.register(inquiryCreateRequest);
+        inquiryService.register(inquiryCreateRequest.toServiceDto());
         return "members/loginForm";
     }
 

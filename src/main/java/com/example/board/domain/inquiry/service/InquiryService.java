@@ -1,7 +1,7 @@
 package com.example.board.domain.inquiry.service;
 
 import com.example.board.domain.inquiry.dao.InquiryDao;
-import com.example.board.domain.inquiry.dto.InquiryCreateRequest;
+import com.example.board.domain.inquiry.dto.InquiryCreateServiceDto;
 import com.example.board.domain.inquiry.dto.InquiryDetailResponse;
 import com.example.board.domain.inquiry.dto.InquiryListResponse;
 import com.example.board.domain.inquiry.entity.Inquiry;
@@ -34,9 +34,9 @@ public class InquiryService {
     }
 
     @Transactional
-    public void register(InquiryCreateRequest request) {
-        Member member = findMemberByEmail(request.getEmail());
-        if (!encoder.matches(request.getPassword(), member.getPassword())) {
+    public void register(InquiryCreateServiceDto dto) {
+        Member member = findMemberByEmail(dto.getEmail());
+        if (!encoder.matches(dto.getPassword(), member.getPassword())) {
             throw new NotFoundMemberException("존재하지 않는 사용자입니다.");
         }
         if (!member.isBlock()) {
@@ -46,7 +46,7 @@ public class InquiryService {
             throw new DuplicateInquiryException("이미 차단 해제 문의 내역이 존재합니다.");
         }
         Inquiry inquiry = Inquiry.builder()
-            .content(request.getContent())
+            .content(dto.getContent())
             .member(member)
             .build();
         inquiryDao.save(inquiry);

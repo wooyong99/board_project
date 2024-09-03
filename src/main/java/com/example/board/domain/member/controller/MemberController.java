@@ -33,7 +33,7 @@ public class MemberController {
     // 회원가입
     @PostMapping("/doSignup")
     public String doSignup(@Valid SignupRequest signupRequest) {
-        memberService.signup(signupRequest, null);
+        memberService.signup(signupRequest.toServiceDto(), null);
         return "redirect:/posts";
     }
 
@@ -65,7 +65,7 @@ public class MemberController {
     // 닉네임 변경
     @PostMapping("/updateNickname")
     public String updatePassowrd(NicknameUpdateRequest nicknameUpdateRequest, Principal principal) {
-        memberService.updateNickname(nicknameUpdateRequest, principal.getName());
+        memberService.updateNickname(nicknameUpdateRequest.toServiceDto(), principal.getName());
 
         return "redirect:/members/info";
     }
@@ -79,7 +79,7 @@ public class MemberController {
     // 비밀번호 변경
     @PostMapping("/updatePassword")
     public String updatePassowrd(PasswordUpdateRequest passwordUpdateRequest, Principal principal) {
-        memberService.updatePassword(passwordUpdateRequest, principal.getName());
+        memberService.updatePassword(passwordUpdateRequest.toServiceDto(), principal.getName());
 
         return "redirect:/members/info";
     }
