@@ -54,4 +54,8 @@ public class Comment extends BaseEntity {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 }
