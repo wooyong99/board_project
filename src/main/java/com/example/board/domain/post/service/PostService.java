@@ -58,12 +58,7 @@ public class PostService {
         Member member = findMemberByEmail(email);
         Category category = findCategoryById(dto.getCategoryId());
 
-        Post post = Post.builder()
-            .title(dto.getTitle())
-            .content(dto.getContent())
-            .member(member)
-            .category(category)
-            .build();
+        Post post = new Post(dto.getTitle(), dto.getContent(), member, category);
 
         postDao.save(post);
     }
