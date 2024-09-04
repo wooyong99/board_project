@@ -33,12 +33,9 @@ public class MemberService {
         if (memberDao.findByEmailAndIsDeletedFalse(dto.getEmail()).isPresent()) {
             throw new DuplicateMemberException("\"이미 존재하는 회원입니다.\"");
         }
-        Member member = Member.builder()
-            .nickname(dto.getNickname())
-            .email(dto.getEmail())
-            .password(encoder.encode(dto.getPassword()))
-            .role(role == null ? MemberRoleEnum.USER : role)
-            .build();
+        Member member = Member.create(dto.getNickname(), dto.getPassword(), dto.getPassword(),
+            role == null ? MemberRoleEnum.USER : role);
+        
         memberDao.save(member);
     }
 
