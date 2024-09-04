@@ -23,12 +23,4 @@ public class InquiryCreateRequest {
         this.password = password;
         this.content = content;
     }
-
-    public InquiryCreateServiceDto toServiceDto() {
-        return InquiryCreateServiceDto.builder()
-            .email(this.email)
-            .password(this.password)
-            .content(this.content)
-            .build();
-    }
 }

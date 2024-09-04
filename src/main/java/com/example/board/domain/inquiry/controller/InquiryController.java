@@ -1,6 +1,7 @@
 package com.example.board.domain.inquiry.controller;
 
 import com.example.board.domain.inquiry.dto.InquiryCreateRequest;
+import com.example.board.domain.inquiry.dto.InquiryCreateServiceDto;
 import com.example.board.domain.inquiry.dto.InquiryDetailResponse;
 import com.example.board.domain.inquiry.dto.InquiryListResponse;
 import com.example.board.domain.inquiry.service.InquiryService;
@@ -31,7 +32,8 @@ public class InquiryController {
     // 차단 문의
     @PostMapping("/inquiry")
     public String registerInquiry(InquiryCreateRequest inquiryCreateRequest) {
-        inquiryService.register(inquiryCreateRequest.toServiceDto());
+        InquiryCreateServiceDto serviceDto = new InquiryCreateServiceDto(inquiryCreateRequest);
+        inquiryService.register(serviceDto);
         return "members/loginForm";
     }
 
