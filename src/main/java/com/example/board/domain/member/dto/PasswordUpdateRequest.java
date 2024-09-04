@@ -24,12 +24,4 @@ public class PasswordUpdateRequest {
         this.newPassword = newPassword;
         this.newPasswordConfirm = newPasswordConfirm;
     }
-
-    public PasswordUpdateServiceDto toServiceDto() {
-        return PasswordUpdateServiceDto.builder()
-            .originPassword(this.originPassword)
-            .newPassword(this.newPassword)
-            .newPasswordConfirm(this.newPasswordConfirm)
-            .build();
-    }
 }

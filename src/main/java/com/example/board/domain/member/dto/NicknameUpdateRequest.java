@@ -16,9 +16,4 @@ public class NicknameUpdateRequest {
         this.newNickname = newNickname;
     }
 
-    public NicknameUpdateServiceDto toServiceDto() {
-        return NicknameUpdateServiceDto.builder()
-            .newNickname(this.newNickname)
-            .build();
-    }
 }

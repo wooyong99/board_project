@@ -1,6 +1,5 @@
 package com.example.board.domain.member.dto;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data
@@ -10,11 +9,9 @@ public class SignupServiceDto {
     private String email;
     private String password;
 
-    @Builder
-    public SignupServiceDto(String nickname, String email, String password) {
-        this.nickname = nickname;
-        this.email = email;
-        this.password = password;
+    public SignupServiceDto(SignupRequest request) {
+        this.nickname = request.getNickname();
+        this.email = request.getEmail();
+        this.password = request.getPassword();
     }
-
 }
