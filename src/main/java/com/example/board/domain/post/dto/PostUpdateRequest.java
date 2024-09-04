@@ -16,11 +16,4 @@ public class PostUpdateRequest {
         this.title = title;
         this.content = content;
     }
-
-    public PostUpdateServiceDto toServiceDto() {
-        return PostUpdateServiceDto.builder()
-            .title(this.title)
-            .content(this.content)
-            .build();
-    }
 }

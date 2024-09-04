@@ -1,6 +1,5 @@
 package com.example.board.domain.member.dto;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data
@@ -10,11 +9,9 @@ public class PasswordUpdateServiceDto {
     private String newPassword;
     private String newPasswordConfirm;
 
-    @Builder
-    public PasswordUpdateServiceDto(String originPassword, String newPassword,
-        String newPasswordConfirm) {
-        this.originPassword = originPassword;
-        this.newPassword = newPassword;
-        this.newPasswordConfirm = newPasswordConfirm;
+    public PasswordUpdateServiceDto(PasswordUpdateRequest request) {
+        this.originPassword = request.getOriginPassword();
+        this.newPassword = request.getNewPassword();
+        this.newPasswordConfirm = request.getNewPasswordConfirm();
     }
 }

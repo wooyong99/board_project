@@ -1,7 +1,9 @@
 package com.example.board.domain.comment.controller;
 
 import com.example.board.domain.comment.dto.CommentCreateRequest;
+import com.example.board.domain.comment.dto.CommentCreateServiceDto;
 import com.example.board.domain.comment.dto.CommentUpdateRequest;
+import com.example.board.domain.comment.dto.CommentUpdateServiceDto;
 import com.example.board.domain.comment.service.CommentService;
 import java.security.Principal;
 import org.springframework.stereotype.Controller;
@@ -21,7 +23,8 @@ public class CommentController {
     @PostMapping("/posts/{postId}/comments")
     public String registerComment(@PathVariable(name = "postId") Long postId,
         CommentCreateRequest commentCreateRequest, Principal principal) {
-        commentService.save(principal.getName(), postId, commentCreateRequest.toServiceDto());
+        CommentCreateServiceDto serviceDto = new CommentCreateServiceDto(commentCreateRequest);
+        commentService.save(principal.getName(), postId, serviceDto);
 
         return "redirect:/posts/" + postId;
     }
@@ -40,7 +43,8 @@ public class CommentController {
     public String updateComment(@PathVariable(name = "postId") Long postId,
         @PathVariable(name = "commentId") Long commentId,
         CommentUpdateRequest commentUpdateRequest, Principal principal) {
-        commentService.update(postId, commentId, commentUpdateRequest.toServiceDto(),
+        CommentUpdateServiceDto serviceDto = new CommentUpdateServiceDto(commentUpdateRequest);
+        commentService.update(postId, commentId, serviceDto,
             principal.getName());
 
         return "redirect:/posts/" + postId;

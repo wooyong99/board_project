@@ -23,12 +23,4 @@ public class SignupRequest {
         this.email = email;
         this.password = password;
     }
-
-    public SignupServiceDto toServiceDto() {
-        return SignupServiceDto.builder()
-            .nickname(this.nickname)
-            .email(this.email)
-            .password(this.password)
-            .build();
-    }
 }

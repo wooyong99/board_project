@@ -1,6 +1,5 @@
 package com.example.board.domain.post.dto;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data
@@ -12,11 +11,9 @@ public class PostCreateServiceDto {
 
     private Long categoryId;
 
-    @Builder
-    public PostCreateServiceDto(String title, String content, Long categoryId) {
-        this.title = title;
-        this.content = content;
-        this.categoryId = categoryId;
+    public PostCreateServiceDto(PostCreateRequest request) {
+        this.title = request.getTitle();
+        this.content = request.getContent();
+        this.categoryId = request.getCategoryId();
     }
-
 }
