@@ -1,15 +1,14 @@
 package com.example.board.persistence.inquiry.service;
 
+import com.example.board.global.exception.DuplicateInquiryException;
+import com.example.board.global.exception.NotFoundInquiryException;
+import com.example.board.global.exception.NotFoundMemberException;
 import com.example.board.persistence.inquiry.dao.InquiryDao;
 import com.example.board.persistence.inquiry.dto.InquiryCreateServiceDto;
 import com.example.board.persistence.inquiry.dto.InquiryDetailResponse;
 import com.example.board.persistence.inquiry.dto.InquiryListResponse;
 import com.example.board.persistence.inquiry.entity.Inquiry;
 import com.example.board.persistence.member.dao.MemberDao;
-import com.example.board.persistence.member.entity.Member;
-import com.example.board.global.exception.DuplicateInquiryException;
-import com.example.board.global.exception.NotFoundInquiryException;
-import com.example.board.global.exception.NotFoundMemberException;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

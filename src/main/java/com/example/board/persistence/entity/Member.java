@@ -1,7 +1,7 @@
-package com.example.board.persistence.member.entity;
+package com.example.board.persistence.entity;
 
-import com.example.board.persistence.inquiry.entity.Inquiry;
 import com.example.board.persistence.member.dto.MemberInfoResponse;
+import com.example.board.persistence.member.entity.MemberRoleEnum;
 import com.example.board.persistence.model.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

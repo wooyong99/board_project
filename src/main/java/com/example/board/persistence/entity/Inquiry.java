@@ -1,7 +1,6 @@
-package com.example.board.persistence.inquiry.entity;
+package com.example.board.persistence.entity;
 
 import com.example.board.persistence.inquiry.dto.InquiryDetailResponse;
-import com.example.board.persistence.member.entity.Member;
 import com.example.board.persistence.model.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;

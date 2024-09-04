@@ -3,7 +3,6 @@ package com.example.board.persistence.post.dao;
 import static com.example.board.persistence.comment.entity.QComment.comment;
 import static com.example.board.persistence.post.entity.QPost.post;
 
-import com.example.board.persistence.comment.entity.Comment;
 import com.example.board.persistence.post.dto.PostDetailResponse;
 import com.example.board.persistence.post.dto.PostListResponse;
 import com.example.board.persistence.post.dto.QPostDetailResponse;

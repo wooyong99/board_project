@@ -1,18 +1,17 @@
 package com.example.board.persistence.comment.service;
 
-import com.example.board.persistence.comment.dao.CommentDao;
-import com.example.board.persistence.comment.dto.CommentCreateServiceDto;
-import com.example.board.persistence.comment.dto.CommentUpdateServiceDto;
-import com.example.board.persistence.comment.entity.Comment;
-import com.example.board.persistence.member.dao.MemberDao;
-import com.example.board.persistence.member.entity.Member;
-import com.example.board.persistence.member.entity.MemberRoleEnum;
-import com.example.board.persistence.post.dao.PostDao;
-import com.example.board.persistence.post.entity.Post;
 import com.example.board.global.exception.AuthorizationException;
 import com.example.board.global.exception.NotFoundCommentException;
 import com.example.board.global.exception.NotFoundMemberException;
 import com.example.board.global.exception.NotFoundPostException;
+import com.example.board.persistence.comment.dao.CommentDao;
+import com.example.board.persistence.comment.dto.CommentCreateServiceDto;
+import com.example.board.persistence.comment.dto.CommentUpdateServiceDto;
+import com.example.board.persistence.entity.Comment;
+import com.example.board.persistence.member.dao.MemberDao;
+import com.example.board.persistence.member.entity.MemberRoleEnum;
+import com.example.board.persistence.post.dao.PostDao;
+import com.example.board.persistence.post.entity.Post;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

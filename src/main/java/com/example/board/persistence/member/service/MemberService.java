@@ -1,16 +1,16 @@
 package com.example.board.persistence.member.service;
 
+import com.example.board.global.exception.DuplicateMemberException;
+import com.example.board.global.exception.InconsistentNewPasswordException;
+import com.example.board.global.exception.InconsistentOriginPasswordException;
+import com.example.board.global.exception.NotFoundMemberException;
+import com.example.board.persistence.entity.Member;
 import com.example.board.persistence.member.dao.MemberDao;
 import com.example.board.persistence.member.dto.MemberInfoResponse;
 import com.example.board.persistence.member.dto.NicknameUpdateServiceDto;
 import com.example.board.persistence.member.dto.PasswordUpdateServiceDto;
 import com.example.board.persistence.member.dto.SignupServiceDto;
-import com.example.board.persistence.member.entity.Member;
 import com.example.board.persistence.member.entity.MemberRoleEnum;
-import com.example.board.global.exception.DuplicateMemberException;
-import com.example.board.global.exception.InconsistentNewPasswordException;
-import com.example.board.global.exception.InconsistentOriginPasswordException;
-import com.example.board.global.exception.NotFoundMemberException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;

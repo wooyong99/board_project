@@ -1,8 +1,5 @@
-package com.example.board.persistence.post.entity;
+package com.example.board.persistence.entity;
 
-import com.example.board.persistence.category.entity.Category;
-import com.example.board.persistence.comment.entity.Comment;
-import com.example.board.persistence.member.entity.Member;
 import com.example.board.persistence.model.BaseEntity;
 import com.example.board.persistence.post.dto.PostUpdateServiceDto;
 import jakarta.persistence.CascadeType;

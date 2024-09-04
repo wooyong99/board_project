@@ -1,7 +1,6 @@
 package com.example.board.global.security;
 
 import com.example.board.persistence.member.dao.MemberDao;
-import com.example.board.persistence.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;

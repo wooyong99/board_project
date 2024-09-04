@@ -1,8 +1,6 @@
-package com.example.board.persistence.comment.entity;
+package com.example.board.persistence.entity;
 
-import com.example.board.persistence.member.entity.Member;
 import com.example.board.persistence.model.BaseEntity;
-import com.example.board.persistence.post.entity.Post;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;

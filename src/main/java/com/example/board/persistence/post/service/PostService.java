@@ -1,9 +1,12 @@
 package com.example.board.persistence.post.service;
 
+import com.example.board.global.exception.AuthorizationException;
+import com.example.board.global.exception.NotFoundCategoryException;
+import com.example.board.global.exception.NotFoundMemberException;
+import com.example.board.global.exception.NotFoundPostException;
 import com.example.board.persistence.category.dao.CategoryDao;
 import com.example.board.persistence.category.entity.Category;
 import com.example.board.persistence.member.dao.MemberDao;
-import com.example.board.persistence.member.entity.Member;
 import com.example.board.persistence.member.entity.MemberRoleEnum;
 import com.example.board.persistence.post.dao.PostDao;
 import com.example.board.persistence.post.dto.PostCreateServiceDto;
@@ -11,10 +14,6 @@ import com.example.board.persistence.post.dto.PostDetailResponse;
 import com.example.board.persistence.post.dto.PostListResponse;
 import com.example.board.persistence.post.dto.PostUpdateServiceDto;
 import com.example.board.persistence.post.entity.Post;
-import com.example.board.global.exception.AuthorizationException;
-import com.example.board.global.exception.NotFoundCategoryException;
-import com.example.board.global.exception.NotFoundMemberException;
-import com.example.board.global.exception.NotFoundPostException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
