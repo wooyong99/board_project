@@ -35,7 +35,7 @@ public class MemberService {
         }
         Member member = Member.create(dto.getNickname(), dto.getPassword(), dto.getPassword(),
             role == null ? MemberRoleEnum.USER : role);
-        
+
         memberDao.save(member);
     }
 
@@ -72,7 +72,7 @@ public class MemberService {
     @Transactional
     public void delete(String email) {
         Member member = findMemberByEmail(email);
-        member.setIsDeleted(true);  // Soft Delete 방법 적용
+        member.delete();  // Soft Delete 방법 적용
     }
 
     public Page<MemberInfoResponse> search(String keyword, Pageable pageable) {

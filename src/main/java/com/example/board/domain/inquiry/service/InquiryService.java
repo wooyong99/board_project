@@ -55,7 +55,7 @@ public class InquiryService {
         Inquiry inquiry = inquiryDao.findByIdAndIsDeletedFalse(inquiryId).orElseThrow(
             () -> new NotFoundInquiryException("존재하지 않는 문의 내역입니다.")
         );
-        inquiry.setIsDeleted(true);     // Soft Delete 방식 적용
+        inquiry.delete();     // Soft Delete 방식 적용
         em.flush();
         inquiry.getMember().updateBlockStatus(false);
     }

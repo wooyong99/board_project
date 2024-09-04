@@ -76,7 +76,7 @@ public class Post extends BaseEntity {
         this.likes++;
     }
 
-    public void setIsDeleted(boolean isDeleted) {
-        this.isDeleted = isDeleted;
+    public void delete() {
+        this.isDeleted = true;
     }
 }

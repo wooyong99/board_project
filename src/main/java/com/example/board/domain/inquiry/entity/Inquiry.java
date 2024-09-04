@@ -50,7 +50,7 @@ public class Inquiry extends BaseEntity {
             .build();
     }
 
-    public void setIsDeleted(boolean isDeleted) {
-        this.isDeleted = isDeleted;
+    public void delete() {
+        this.isDeleted = true;
     }
 }

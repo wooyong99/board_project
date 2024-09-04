@@ -45,7 +45,7 @@ public class CommentService {
             .equals(MemberRoleEnum.USER)) {
             throw new AuthorizationException("권한이 없습니다.");
         }
-        comment.setIsDeleted(true);     // Soft Delete 방식 적용
+        comment.delete();     // Soft Delete 방식 적용
     }
 
     @Transactional
@@ -63,7 +63,7 @@ public class CommentService {
     @Transactional
     public void declaration(Long postId, Long commentId) {
         Comment comment = findCommentByIdAndPostId(commentId, postId);
-        comment.setIsDeleted(true);     // Soft Delete 방식 적용
+        comment.delete();     // Soft Delete 방식 적용
         if (comment.getMember().getRole().equals(MemberRoleEnum.USER)) {
             comment.getMember().updateBlockStatus(true);
         }

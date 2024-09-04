@@ -78,7 +78,7 @@ public class Member extends BaseEntity {
         this.nickname = newNickname;
     }
 
-    public void setIsDeleted(boolean isDeleted) {
-        this.isDeleted = isDeleted;
+    public void delete() {
+        this.isDeleted = true;
     }
 }
