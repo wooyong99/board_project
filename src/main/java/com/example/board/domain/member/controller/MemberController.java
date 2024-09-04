@@ -2,8 +2,11 @@ package com.example.board.domain.member.controller;
 
 import com.example.board.domain.member.dto.MemberInfoResponse;
 import com.example.board.domain.member.dto.NicknameUpdateRequest;
+import com.example.board.domain.member.dto.NicknameUpdateServiceDto;
 import com.example.board.domain.member.dto.PasswordUpdateRequest;
+import com.example.board.domain.member.dto.PasswordUpdateServiceDto;
 import com.example.board.domain.member.dto.SignupRequest;
+import com.example.board.domain.member.dto.SignupServiceDto;
 import com.example.board.domain.member.service.MemberService;
 import jakarta.validation.Valid;
 import java.security.Principal;
@@ -33,7 +36,8 @@ public class MemberController {
     // 회원가입
     @PostMapping("/doSignup")
     public String doSignup(@Valid SignupRequest signupRequest) {
-        memberService.signup(signupRequest.toServiceDto(), null);
+        SignupServiceDto serviceDto = new SignupServiceDto(signupRequest);
+        memberService.signup(serviceDto, null);
         return "redirect:/posts";
     }
 
@@ -65,7 +69,8 @@ public class MemberController {
     // 닉네임 변경
     @PostMapping("/updateNickname")
     public String updatePassowrd(NicknameUpdateRequest nicknameUpdateRequest, Principal principal) {
-        memberService.updateNickname(nicknameUpdateRequest.toServiceDto(), principal.getName());
+        NicknameUpdateServiceDto serviceDto = new NicknameUpdateServiceDto(nicknameUpdateRequest);
+        memberService.updateNickname(serviceDto, principal.getName());
 
         return "redirect:/members/info";
     }
@@ -79,7 +84,8 @@ public class MemberController {
     // 비밀번호 변경
     @PostMapping("/updatePassword")
     public String updatePassowrd(PasswordUpdateRequest passwordUpdateRequest, Principal principal) {
-        memberService.updatePassword(passwordUpdateRequest.toServiceDto(), principal.getName());
+        PasswordUpdateServiceDto serviceDto = new PasswordUpdateServiceDto(passwordUpdateRequest);
+        memberService.updatePassword(serviceDto, principal.getName());
 
         return "redirect:/members/info";
     }

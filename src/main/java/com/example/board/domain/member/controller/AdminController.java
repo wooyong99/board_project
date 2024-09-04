@@ -2,6 +2,7 @@ package com.example.board.domain.member.controller;
 
 import com.example.board.domain.member.dto.MemberInfoResponse;
 import com.example.board.domain.member.dto.SignupRequest;
+import com.example.board.domain.member.dto.SignupServiceDto;
 import com.example.board.domain.member.entity.MemberRoleEnum;
 import com.example.board.domain.member.service.MemberService;
 import jakarta.validation.Valid;
@@ -35,7 +36,8 @@ public class AdminController {
     // 회원가입 기능
     @PostMapping("/doSignup")
     public String doSignup(@Valid SignupRequest signupRequest) {
-        memberService.signup(signupRequest.toServiceDto(), MemberRoleEnum.ADMIN);
+        SignupServiceDto serviceDto = new SignupServiceDto(signupRequest);
+        memberService.signup(serviceDto, MemberRoleEnum.ADMIN);
 
         return "redirect:/posts";
     }
