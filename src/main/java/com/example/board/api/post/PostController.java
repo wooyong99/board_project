@@ -1,4 +1,4 @@
-package com.example.board.persistence.post.controller;
+package com.example.board.api.post;
 
 import com.example.board.persistence.post.dto.PostCreateRequest;
 import com.example.board.persistence.post.dto.PostCreateServiceDto;

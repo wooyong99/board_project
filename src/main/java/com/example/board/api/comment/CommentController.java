@@ -1,4 +1,4 @@
-package com.example.board.persistence.comment.controller;
+package com.example.board.api.comment;
 
 import com.example.board.persistence.comment.dto.CommentCreateRequest;
 import com.example.board.persistence.comment.dto.CommentCreateServiceDto;

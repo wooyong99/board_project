@@ -1,4 +1,4 @@
-package com.example.board.persistence.member.controller;
+package com.example.board.api.member;
 
 import com.example.board.persistence.member.dto.MemberInfoResponse;
 import com.example.board.persistence.member.dto.NicknameUpdateRequest;

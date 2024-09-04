@@ -1,4 +1,4 @@
-package com.example.board.persistence.inquiry.controller;
+package com.example.board.api.inquiry;
 
 import com.example.board.persistence.inquiry.dto.InquiryCreateRequest;
 import com.example.board.persistence.inquiry.dto.InquiryCreateServiceDto;
