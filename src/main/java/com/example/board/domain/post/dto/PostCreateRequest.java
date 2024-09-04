@@ -21,12 +21,4 @@ public class PostCreateRequest {
         this.content = content;
         this.categoryId = categoryId;
     }
-
-    public PostCreateServiceDto toServiceDto() {
-        return PostCreateServiceDto.builder()
-            .title(this.title)
-            .content(this.content)
-            .categoryId(this.categoryId)
-            .build();
-    }
 }

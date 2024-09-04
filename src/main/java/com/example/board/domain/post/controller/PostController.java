@@ -1,9 +1,11 @@
 package com.example.board.domain.post.controller;
 
 import com.example.board.domain.post.dto.PostCreateRequest;
+import com.example.board.domain.post.dto.PostCreateServiceDto;
 import com.example.board.domain.post.dto.PostDetailResponse;
 import com.example.board.domain.post.dto.PostListResponse;
 import com.example.board.domain.post.dto.PostUpdateRequest;
+import com.example.board.domain.post.dto.PostUpdateServiceDto;
 import com.example.board.domain.post.service.PostService;
 import java.security.Principal;
 import org.springframework.data.domain.Page;
@@ -61,7 +63,8 @@ public class PostController {
     // 게시글 등록
     @PostMapping("/register")
     public String registerFreeBoard(PostCreateRequest postCreateRequest, Principal principal) {
-        postService.save(postCreateRequest.toServiceDto(), principal.getName());
+        PostCreateServiceDto serviceDto = new PostCreateServiceDto(postCreateRequest);
+        postService.save(serviceDto, principal.getName());
 
         return "redirect:/posts";
     }
@@ -90,7 +93,8 @@ public class PostController {
     @PostMapping("/{postId}/update")
     public String updatePost(@PathVariable(name = "postId") Long postId,
         PostUpdateRequest postUpdateRequest, Principal principal) {
-        postService.update(postId, postUpdateRequest.toServiceDto(), principal.getName());
+        PostUpdateServiceDto serviceDto = new PostUpdateServiceDto(postUpdateRequest);
+        postService.update(postId, serviceDto, principal.getName());
 
         return "redirect:/posts";
     }
