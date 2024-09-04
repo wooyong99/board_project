@@ -37,6 +37,10 @@ public class Inquiry extends BaseEntity {
         this.member = member;
     }
 
+    public static Inquiry create(String content, Member member) {
+        return new Inquiry(content, member);
+    }
+
     public InquiryDetailResponse toDetailResponse() {
         return InquiryDetailResponse.builder()
             .id(this.getId())

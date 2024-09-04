@@ -45,10 +45,8 @@ public class InquiryService {
         if (inquiryDao.existsByMemberIdAndIsDeletedFalse(member.getId())) {
             throw new DuplicateInquiryException("이미 차단 해제 문의 내역이 존재합니다.");
         }
-        Inquiry inquiry = Inquiry.builder()
-            .content(dto.getContent())
-            .member(member)
-            .build();
+        Inquiry inquiry = Inquiry.create(dto.getContent(), member);
+
         inquiryDao.save(inquiry);
     }
 
