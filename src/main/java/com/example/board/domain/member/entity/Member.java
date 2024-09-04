@@ -11,7 +11,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -44,12 +43,16 @@ public class Member extends BaseEntity {
     protected Member() {
     }
 
-    @Builder
     public Member(String nickname, String email, String password, MemberRoleEnum role) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.role = role;
+    }
+
+    public static Member create(String nickname, String email, String password,
+        MemberRoleEnum role) {
+        return new Member(nickname, email, password, role);
     }
 
     public MemberInfoResponse toMemberInfoResponse() {

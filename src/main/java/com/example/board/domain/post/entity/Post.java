@@ -17,7 +17,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -53,8 +52,10 @@ public class Post extends BaseEntity {
     protected Post() {
     }
 
+    public static Post create(String title, String content, Member member, Category category) {
+        return new Post(title, content, member, category);
+    }
 
-    @Builder
     public Post(String title, String content, Member member, Category category) {
         this.title = title;
         this.content = content;
