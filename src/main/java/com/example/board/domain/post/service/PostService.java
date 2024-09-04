@@ -84,14 +84,14 @@ public class PostService {
             .equals(MemberRoleEnum.USER)) {
             throw new AuthorizationException("권한이 없습니다.");
         }
-        post.setIsDeleted(true);    // Soft Delete 방식 적용
+        post.delete();    // Soft Delete 방식 적용
     }
 
     // 게시글 신고하기
     @Transactional
     public void declaration(Long postId) {
         Post post = findPostById(postId);
-        post.setIsDeleted(true);    // Soft Delete 방식 적용
+        post.delete();    // Soft Delete 방식 적용
         if (post.getMember().getRole().equals(MemberRoleEnum.USER)) {
             post.getMember().updateBlockStatus(true);
         }
