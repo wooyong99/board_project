@@ -26,7 +26,9 @@ public class CustomInquiryDaoImpl implements CustomInquiryDao {
                     inquiry.member.nickname,
                     inquiry.member.email,
                     inquiry.createdAt,
-                    inquiry.member.isBlock
+                    inquiry.member.updatedAt,
+                    inquiry.member.isBlock,
+                    inquiry.member.id
                 )
             )
             .from(inquiry)
