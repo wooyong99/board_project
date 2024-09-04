@@ -11,7 +11,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -36,11 +35,14 @@ public class Comment extends BaseEntity {
     protected Comment() {
     }
 
-    @Builder
     public Comment(String content, Post post, Member member) {
         this.content = content;
         this.member = member;
         setPost(post);
+    }
+
+    public static Comment create(String content, Post post, Member member) {
+        return new Comment(content, post, member);
     }
 
     private void setPost(Post post) {

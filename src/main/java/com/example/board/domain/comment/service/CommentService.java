@@ -33,11 +33,7 @@ public class CommentService {
     public void save(String email, Long postId, CommentCreateServiceDto dto) {
         Post post = findPostById(postId);
         Member member = findMemberByEmail(email);
-        Comment comment = Comment.builder()
-            .content(dto.getContent())
-            .post(post)
-            .member(member)
-            .build();
+        Comment comment = Comment.create(dto.getContent(), post, member);
         commentDao.save(comment);
     }
 
