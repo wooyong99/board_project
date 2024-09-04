@@ -1,6 +1,6 @@
 package com.example.board.global.security;
 
-import com.example.board.domain.member.entity.Member;
+import com.example.board.persistence.member.entity.Member;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
