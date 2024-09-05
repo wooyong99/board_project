@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class ServiceMember implements SignupMemberUseCase, GetMemberInfoUseCase,
+public class MemberService implements SignupMemberUseCase, GetMemberInfoUseCase,
     UpdateNicknameUseCase, UpdatePasswordUseCase, DeleteMemberUseCase, SearchMemberUseCase,
     UpdateBlockStatusUseCase {
 
@@ -34,7 +34,7 @@ public class ServiceMember implements SignupMemberUseCase, GetMemberInfoUseCase,
     private final PasswordEncoder encoder;
 
     @Autowired
-    public ServiceMember(MemberDao memberDao, PasswordEncoder encoder) {
+    public MemberService(MemberDao memberDao, PasswordEncoder encoder) {
         this.memberDao = memberDao;
         this.encoder = encoder;
     }
@@ -45,7 +45,8 @@ public class ServiceMember implements SignupMemberUseCase, GetMemberInfoUseCase,
         if (memberDao.findByEmailAndIsDeletedFalse(dto.getEmail()).isPresent()) {
             throw new DuplicateMemberException("\"이미 존재하는 회원입니다.\"");
         }
-        Member member = Member.create(dto.getNickname(), dto.getPassword(), dto.getPassword(),
+        Member member = Member.create(dto.getNickname(), dto.getEmail(),
+            encoder.encode(dto.getPassword()),
             role == null ? MemberRoleEnum.USER : role);
 
         memberDao.save(member);
