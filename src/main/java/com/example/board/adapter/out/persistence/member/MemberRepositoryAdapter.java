@@ -43,4 +43,8 @@ public class MemberRepositoryAdapter {
             () -> new NotFoundMemberException("존재하지 않는 사용자입니다.")
         );
     }
+
+    public boolean existsByEmailAndIsDeletedFalse(String email) {
+        return memberJpaRepository.existsByEmailAndIsDeletedFalse(email);
+    }
 }

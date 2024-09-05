@@ -41,7 +41,7 @@ public class MemberService implements SignupMemberUseCase, GetMemberInfoUseCase,
     @Transactional
     @Override
     public void signup(SignupServiceDto dto, MemberRoleEnum role) {
-        if (memberRepositoryAdapter.findByEmailAndIsDeletedFalse(dto.getEmail()) != null) {
+        if (memberRepositoryAdapter.existsByEmailAndIsDeletedFalse(dto.getEmail())) {
             throw new DuplicateMemberException("\"이미 존재하는 회원입니다.\"");
         }
         Member member = Member.create(dto.getNickname(), dto.getEmail(),
