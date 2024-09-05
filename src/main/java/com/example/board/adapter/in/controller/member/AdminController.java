@@ -2,7 +2,9 @@ package com.example.board.adapter.ports.in.controller.member;
 
 import com.example.board.adapter.ports.in.dto.request.member.SignupRequest;
 import com.example.board.adapter.ports.in.dto.response.member.MemberInfoResponse;
-import com.example.board.application.service.ServiceMember;
+import com.example.board.application.port.in.member.SearchMemberUseCase;
+import com.example.board.application.port.in.member.SignupMemberUseCase;
+import com.example.board.application.port.in.member.UpdateBlockStatusUseCase;
 import com.example.board.application.service.dto.SignupServiceDto;
 import com.example.board.domain.entity.MemberRoleEnum;
 import jakarta.validation.Valid;
@@ -22,11 +24,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/admins")
 public class AdminController {
 
-    private final ServiceMember memberService;
+    private final SignupMemberUseCase signupMemberUseCase;
+    private final SearchMemberUseCase searchMemberUseCase;
+    private final UpdateBlockStatusUseCase updateBlockStatusUseCase;
 
     @Autowired
-    public AdminController(ServiceMember memberService) {
-        this.memberService = memberService;
+    public AdminController(SignupMemberUseCase signupMemberUseCase,
+        SearchMemberUseCase searchMemberUseCase,
+        UpdateBlockStatusUseCase updateBlockStatusUseCase) {
+        this.signupMemberUseCase = signupMemberUseCase;
+        this.searchMemberUseCase = searchMemberUseCase;
+        this.updateBlockStatusUseCase = updateBlockStatusUseCase;
     }
 
     // 회원가입 페이지 이동
@@ -39,7 +47,7 @@ public class AdminController {
     @PostMapping("/doSignup")
     public String doSignup(@Valid SignupRequest signupRequest) {
         SignupServiceDto serviceDto = new SignupServiceDto(signupRequest);
-        memberService.signup(serviceDto, MemberRoleEnum.ADMIN);
+        signupMemberUseCase.signup(serviceDto, MemberRoleEnum.ADMIN);
 
         return "redirect:/posts";
     }
@@ -50,7 +58,7 @@ public class AdminController {
         @PageableDefault Pageable pageable,
         Model model) {
 
-        Page<MemberInfoResponse> members = memberService.search(keyword, pageable);
+        Page<MemberInfoResponse> members = searchMemberUseCase.search(keyword, pageable);
 
         model.addAttribute("members", members);
 
@@ -60,7 +68,7 @@ public class AdminController {
     // 회원 차단
     @PostMapping("/members/{memberId}/block")
     public String blockMember(@PathVariable(name = "memberId") Long memberId) {
-        memberService.updateBlockStatus(memberId, true);
+        updateBlockStatusUseCase.updateBlockStatus(memberId, true);
 
         return "redirect:/admins/search/members";
     }
@@ -68,7 +76,7 @@ public class AdminController {
     // 회원 차단 해제
     @PostMapping("/members/{memberId}/unblock")
     public String unblockMember(@PathVariable(name = "memberId") Long memberId) {
-        memberService.updateBlockStatus(memberId, false);
+        updateBlockStatusUseCase.updateBlockStatus(memberId, false);
 
         return "redirect:/admins/search/members";
     }
