@@ -76,6 +76,7 @@ public class CommentService implements SaveCommentUseCase, UpdateCommentUseCase,
         Comment comment = commentRepositoryAdapter.findByIdAndPostId(commentId, postId);
         comment.delete();     // Soft Delete 방식 적용
         if (comment.getMember().getRole().equals(MemberRoleEnum.USER)) {
+            comment.getMember().updateBlockedAt();
             comment.getMember().updateBlockStatus(true);
         }
     }
