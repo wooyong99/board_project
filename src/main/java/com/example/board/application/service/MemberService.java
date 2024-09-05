@@ -95,6 +95,9 @@ public class MemberService implements SignupMemberUseCase, GetMemberInfoUseCase,
     @Override
     public void updateBlockStatus(Long memberId, boolean isBlock) {
         Member member = memberRepositoryAdapter.findById(memberId);
+        if (isBlock) {
+            member.updateBlockedAt();
+        }
         member.updateBlockStatus(isBlock);
     }
 }
