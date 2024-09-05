@@ -66,13 +66,13 @@
       <div class="w-2/12 flex justify-center items-center" th:text="${#temporals.format(inquiry.createdAt,'YYYY-MM-dd')}"></div>
       <div class="w-1/12 flex justify-center items-center">
         <span>
-            <th:block th:if="${inquiry.isAuthorBlock}">
+            <th:block th:if="${!inquiry.isAuthorBlock}">
                 <form th:action="@{|/admins/members/${inquiry.memberId}/block|}" method="post">
                     <button type="submit" class="btn btn-danger">차단 하기</button>
                 </form>
             </th:block>
-            <th:block th:if="${!inquiry.isAuthorBlock}">
-                <span th:text="${#temporals.format(inquiry.memberUpdatedAt, 'YYYY-MM-dd HH:mm')}"></span>
+            <th:block th:if="${inquiry.isAuthorBlock}">
+                <span th:text="${#temporals.format(inquiry.blockedAt, 'YYYY-MM-dd HH:mm')}"></span>
             </th:block>
         </span>
       </div>
