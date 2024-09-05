@@ -1,0 +1,18 @@
+package com.example.board.adapter.ports.in.dto.request.comment;
+
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+
+@Data
+public class CommentUpdateRequest {
+
+    @NotBlank(message = "댓글 내용은 공백, 빈칸을 입력할 수 없습니다.")
+    private String content;
+
+    public CommentUpdateRequest() {
+    }
+
+    public CommentUpdateRequest(String content) {
+        this.content = content;
+    }
+}
