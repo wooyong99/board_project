@@ -110,6 +110,7 @@ public class PostService implements GetPostListUseCase, SearchPostUseCase, GetPo
         Post post = postRepositoryAdapter.findById(postId);
         post.delete();    // Soft Delete 방식 적용
         if (post.getMember().getRole().equals(MemberRoleEnum.USER)) {
+            post.getMember().updateBlockedAt();
             post.getMember().updateBlockStatus(true);
         }
     }

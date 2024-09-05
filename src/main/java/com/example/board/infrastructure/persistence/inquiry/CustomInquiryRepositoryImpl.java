@@ -33,7 +33,7 @@ public class CustomInquiryRepositoryImpl implements CustomInquiryRepository {
                     inquiry.member.nickname,
                     inquiry.member.email,
                     inquiry.createdAt,
-                    inquiry.member.updatedAt,
+                    inquiry.member.blockedAt,
                     inquiry.member.isBlock,
                     inquiry.member.id
                 )

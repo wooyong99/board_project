@@ -10,6 +10,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -27,6 +28,8 @@ public class Member extends BaseEntity {
     private String password;
 
     private boolean isBlock;
+
+    private LocalDateTime blockedAt;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -79,5 +82,9 @@ public class Member extends BaseEntity {
 
     public void delete() {
         this.isDeleted = true;
+    }
+
+    public void updateBlockedAt() {
+        this.blockedAt = LocalDateTime.now();
     }
 }
