@@ -2,9 +2,12 @@ package com.example.board.adapter.ports.in.controller.comment;
 
 import com.example.board.adapter.ports.in.dto.request.comment.CommentCreateRequest;
 import com.example.board.adapter.ports.in.dto.request.comment.CommentUpdateRequest;
+import com.example.board.application.port.in.comment.DeclarationCommentUseCase;
+import com.example.board.application.port.in.comment.DeleteCommentUseCase;
+import com.example.board.application.port.in.comment.SaveCommentUseCase;
+import com.example.board.application.port.in.comment.UpdateCommentUseCase;
 import com.example.board.application.service.dto.CommentCreateServiceDto;
 import com.example.board.application.service.dto.CommentUpdateServiceDto;
-import com.example.board.application.service.CommentService;
 import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,11 +17,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class CommentController {
 
-    private final CommentService commentService;
+    private final SaveCommentUseCase saveCommentUseCase;
+    private final DeleteCommentUseCase deleteCommentUseCase;
+    private final DeclarationCommentUseCase declarationCommentUseCase;
+    private final UpdateCommentUseCase updateCommentUseCase;
 
     @Autowired
-    public CommentController(CommentService commentService) {
-        this.commentService = commentService;
+    public CommentController(SaveCommentUseCase saveCommentUseCase,
+        DeleteCommentUseCase deleteCommentUseCase,
+        DeclarationCommentUseCase declarationCommentUseCase,
+        UpdateCommentUseCase updateCommentUseCase) {
+        this.saveCommentUseCase = saveCommentUseCase;
+        this.deleteCommentUseCase = deleteCommentUseCase;
+        this.declarationCommentUseCase = declarationCommentUseCase;
+        this.updateCommentUseCase = updateCommentUseCase;
     }
 
     // 댓글 저장
@@ -26,7 +38,7 @@ public class CommentController {
     public String registerComment(@PathVariable(name = "postId") Long postId,
         CommentCreateRequest commentCreateRequest, Principal principal) {
         CommentCreateServiceDto serviceDto = new CommentCreateServiceDto(commentCreateRequest);
-        commentService.save(principal.getName(), postId, serviceDto);
+        saveCommentUseCase.save(principal.getName(), postId, serviceDto);
 
         return "redirect:/posts/" + postId;
     }
@@ -35,7 +47,7 @@ public class CommentController {
     @PostMapping("/posts/{postId}/comments/{commentId}/delete")
     public String deleteComment(@PathVariable(name = "postId") Long postId,
         @PathVariable(name = "commentId") Long commentId, Principal principal) {
-        commentService.delete(postId, commentId, principal.getName());
+        deleteCommentUseCase.delete(postId, commentId, principal.getName());
 
         return "redirect:/posts/" + postId;
     }
@@ -46,7 +58,7 @@ public class CommentController {
         @PathVariable(name = "commentId") Long commentId,
         CommentUpdateRequest commentUpdateRequest, Principal principal) {
         CommentUpdateServiceDto serviceDto = new CommentUpdateServiceDto(commentUpdateRequest);
-        commentService.update(postId, commentId, serviceDto,
+        updateCommentUseCase.update(postId, commentId, serviceDto,
             principal.getName());
 
         return "redirect:/posts/" + postId;
@@ -56,7 +68,7 @@ public class CommentController {
     @PostMapping("/posts/{postId}/comments/{commentId}/declaration")
     public String inquiryComment(@PathVariable(name = "postId") Long postId,
         @PathVariable(name = "commentId") Long commentId) {
-        commentService.declaration(postId, commentId);
+        declarationCommentUseCase.declaration(postId, commentId);
 
         return "redirect:/posts/" + postId;
     }
