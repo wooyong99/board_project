@@ -3,8 +3,11 @@ package com.example.board.adapter.ports.in.controller.inquiry;
 import com.example.board.adapter.ports.in.dto.request.inquiry.InquiryCreateRequest;
 import com.example.board.adapter.ports.in.dto.response.post.inquiry.InquiryDetailResponse;
 import com.example.board.adapter.ports.in.dto.response.post.inquiry.InquiryListResponse;
+import com.example.board.application.port.in.inquiry.DeleteInquiryUseCase;
+import com.example.board.application.port.in.inquiry.GetInquiryDetailUseCase;
+import com.example.board.application.port.in.inquiry.GetInquiryListUseCase;
+import com.example.board.application.port.in.inquiry.SaveInquiryUseCase;
 import com.example.board.application.service.dto.InquiryCreateServiceDto;
-import com.example.board.application.service.InquiryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,11 +21,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class InquiryController {
 
-    private final InquiryService inquiryService;
+    private final SaveInquiryUseCase saveInquiryUseCase;
+    private final DeleteInquiryUseCase deleteInquiryUseCase;
+    private final GetInquiryListUseCase getInquiryListUseCase;
+    private final GetInquiryDetailUseCase getInquiryDetailUseCase;
+
 
     @Autowired
-    public InquiryController(InquiryService inquiryService) {
-        this.inquiryService = inquiryService;
+    public InquiryController(SaveInquiryUseCase saveInquiryUseCase,
+        DeleteInquiryUseCase deleteInquiryUseCase, GetInquiryDetailUseCase getInquiryDetailUseCase,
+        GetInquiryListUseCase getInquiryListUseCase) {
+        this.saveInquiryUseCase = saveInquiryUseCase;
+        this.deleteInquiryUseCase = deleteInquiryUseCase;
+        this.getInquiryDetailUseCase = getInquiryDetailUseCase;
+        this.getInquiryListUseCase = getInquiryListUseCase;
     }
 
     // 차단 문의 페이지 이동
@@ -33,16 +45,16 @@ public class InquiryController {
 
     // 차단 문의
     @PostMapping("/inquiry")
-    public String registerInquiry(InquiryCreateRequest inquiryCreateRequest) {
+    public String saveInquiry(InquiryCreateRequest inquiryCreateRequest) {
         InquiryCreateServiceDto serviceDto = new InquiryCreateServiceDto(inquiryCreateRequest);
-        inquiryService.save(serviceDto);
+        saveInquiryUseCase.save(serviceDto);
         return "members/loginForm";
     }
 
     // 문의 게시글 리스트 조회
     @GetMapping("/inquiry")
     public String getInquiry(@PageableDefault Pageable pageable, Model model) {
-        Page<InquiryListResponse> inquiries = inquiryService.findList(pageable);
+        Page<InquiryListResponse> inquiries = getInquiryListUseCase.findList(pageable);
 
         model.addAttribute("inquiries", inquiries);
 
@@ -52,7 +64,7 @@ public class InquiryController {
     // 문의 게시글 단건 조회
     @GetMapping("/inquiry/{inquiryId}")
     public String getInquiry(@PathVariable(name = "inquiryId") Long inquiryId, Model model) {
-        InquiryDetailResponse inquiry = inquiryService.findOne(inquiryId);
+        InquiryDetailResponse inquiry = getInquiryDetailUseCase.findOne(inquiryId);
 
         model.addAttribute("inquiry", inquiry);
 
@@ -62,7 +74,7 @@ public class InquiryController {
     // 문의 게시글 삭제
     @PostMapping("/inquiry/{inquiryId}/delete")
     public String deleteInquiry(@PathVariable(name = "inquiryId") Long inquiryId) {
-        inquiryService.delete(inquiryId);
+        deleteInquiryUseCase.delete(inquiryId);
 
         return "redirect:/inquiry";
     }

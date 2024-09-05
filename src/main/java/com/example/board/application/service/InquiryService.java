@@ -5,6 +5,8 @@ import com.example.board.adapter.ports.in.dto.response.post.inquiry.InquiryListR
 import com.example.board.adapter.ports.out.persistence.inquiry.InquiryDao;
 import com.example.board.adapter.ports.out.persistence.member.MemberDao;
 import com.example.board.application.port.in.inquiry.DeleteInquiryUseCase;
+import com.example.board.application.port.in.inquiry.GetInquiryDetailUseCase;
+import com.example.board.application.port.in.inquiry.GetInquiryListUseCase;
 import com.example.board.application.port.in.inquiry.SaveInquiryUseCase;
 import com.example.board.application.service.dto.InquiryCreateServiceDto;
 import com.example.board.domain.entity.Inquiry;
@@ -21,7 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class InquiryService implements SaveInquiryUseCase, DeleteInquiryUseCase {
+public class InquiryService implements SaveInquiryUseCase, DeleteInquiryUseCase,
+    GetInquiryListUseCase, GetInquiryDetailUseCase {
 
     private final InquiryDao inquiryDao;
     private final MemberDao memberDao;
@@ -72,10 +75,14 @@ public class InquiryService implements SaveInquiryUseCase, DeleteInquiryUseCase 
         );
     }
 
+    @Transactional
+    @Override
     public Page<InquiryListResponse> findList(Pageable pageable) {
         return inquiryDao.findList(pageable);
     }
 
+    @Transactional
+    @Override
     public InquiryDetailResponse findOne(Long id) {
         return inquiryDao.findByIdAndIsDeletedFalse(id).orElseThrow(
             () -> new NotFoundInquiryException("존재하지 않는 문의입니다.")
