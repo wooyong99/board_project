@@ -1,4 +1,4 @@
-package com.example.board.adapter.out.post;
+package com.example.board.adapter.out.persistence.post;
 
 import com.example.board.adapter.ports.in.dto.response.post.PostDetailResponse;
 import com.example.board.adapter.ports.in.dto.response.post.PostListResponse;

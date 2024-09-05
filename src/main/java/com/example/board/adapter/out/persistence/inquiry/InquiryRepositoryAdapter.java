@@ -1,4 +1,4 @@
-package com.example.board.adapter.out.inquiry;
+package com.example.board.adapter.out.persistence.inquiry;
 
 import com.example.board.adapter.ports.in.dto.response.post.inquiry.InquiryListResponse;
 import com.example.board.domain.entity.Inquiry;

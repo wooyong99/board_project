@@ -1,4 +1,4 @@
-package com.example.board.adapter.out.comment;
+package com.example.board.adapter.out.persistence.comment;
 
 import com.example.board.domain.entity.Comment;
 import com.example.board.infrastructure.exception.NotFoundCommentException;

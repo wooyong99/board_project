@@ -1,6 +1,6 @@
 package com.example.board.application.service;
 
-import com.example.board.adapter.out.member.MemberRepositoryAdapter;
+import com.example.board.adapter.out.persistence.member.MemberRepositoryAdapter;
 import com.example.board.adapter.ports.in.dto.response.member.MemberInfoResponse;
 import com.example.board.application.port.in.member.DeleteMemberUseCase;
 import com.example.board.application.port.in.member.GetMemberInfoUseCase;

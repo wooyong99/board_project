@@ -1,7 +1,7 @@
 package com.example.board.application.service;
 
-import com.example.board.adapter.out.inquiry.InquiryRepositoryAdapter;
-import com.example.board.adapter.out.member.MemberRepositoryAdapter;
+import com.example.board.adapter.out.persistence.inquiry.InquiryRepositoryAdapter;
+import com.example.board.adapter.out.persistence.member.MemberRepositoryAdapter;
 import com.example.board.adapter.ports.in.dto.response.post.inquiry.InquiryDetailResponse;
 import com.example.board.adapter.ports.in.dto.response.post.inquiry.InquiryListResponse;
 import com.example.board.application.port.in.inquiry.DeleteInquiryUseCase;

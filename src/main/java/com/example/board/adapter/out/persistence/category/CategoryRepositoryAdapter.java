@@ -1,4 +1,4 @@
-package com.example.board.adapter.out.category;
+package com.example.board.adapter.out.persistence.category;
 
 import com.example.board.domain.entity.Category;
 import com.example.board.infrastructure.exception.NotFoundCategoryException;

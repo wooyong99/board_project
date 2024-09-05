@@ -1,8 +1,8 @@
 package com.example.board.application.service;
 
-import com.example.board.adapter.out.comment.CommentRepositoryAdapter;
-import com.example.board.adapter.out.member.MemberRepositoryAdapter;
-import com.example.board.adapter.out.post.PostRepositoryAdapter;
+import com.example.board.adapter.out.persistence.comment.CommentRepositoryAdapter;
+import com.example.board.adapter.out.persistence.member.MemberRepositoryAdapter;
+import com.example.board.adapter.out.persistence.post.PostRepositoryAdapter;
 import com.example.board.application.port.in.comment.DeclarationCommentUseCase;
 import com.example.board.application.port.in.comment.DeleteCommentUseCase;
 import com.example.board.application.port.in.comment.SaveCommentUseCase;

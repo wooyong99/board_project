@@ -1,8 +1,8 @@
 package com.example.board.application.service;
 
-import com.example.board.adapter.out.category.CategoryRepositoryAdapter;
-import com.example.board.adapter.out.member.MemberRepositoryAdapter;
-import com.example.board.adapter.out.post.PostRepositoryAdapter;
+import com.example.board.adapter.out.persistence.category.CategoryRepositoryAdapter;
+import com.example.board.adapter.out.persistence.member.MemberRepositoryAdapter;
+import com.example.board.adapter.out.persistence.post.PostRepositoryAdapter;
 import com.example.board.adapter.ports.in.dto.response.post.PostDetailResponse;
 import com.example.board.adapter.ports.in.dto.response.post.PostListResponse;
 import com.example.board.application.port.in.post.DeclarationPostUseCase;

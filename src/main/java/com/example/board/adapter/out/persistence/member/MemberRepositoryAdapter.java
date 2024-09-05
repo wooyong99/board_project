@@ -1,4 +1,4 @@
-package com.example.board.adapter.out.member;
+package com.example.board.adapter.out.persistence.member;
 
 import com.example.board.adapter.ports.in.dto.response.member.MemberInfoResponse;
 import com.example.board.domain.entity.Member;
