@@ -1,4 +1,4 @@
-package com.example.board.adapter.ports.out.persistence.inquiry;
+package com.example.board.infrastructure.persistence.inquiry;
 
 
 import static com.example.board.domain.entity.QInquiry.inquiry;
@@ -15,12 +15,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class CustomInquiryDaoImpl implements CustomInquiryDao {
+public class CustomInquiryRepositoryImpl implements CustomInquiryRepository {
 
     private final JPAQueryFactory queryFactory;
 
 //    @Autowired
-//    public CustomInquiryDaoImpl(JPAQueryFactory queryFactory) {
+//    public CustomInquiryRepositoryImpl(JPAQueryFactory queryFactory) {
 //        this.queryFactory = queryFactory;
 //    }
 

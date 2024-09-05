@@ -1,4 +1,4 @@
-package com.example.board.adapter.ports.out.persistence.member;
+package com.example.board.infrastructure.persistence.member;
 
 
 import static com.example.board.domain.entity.QMember.member;
@@ -17,14 +17,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class CustomMemberDaoImpl implements CustomMemberDao {
+public class CustomMemberRepositoryImpl implements CustomMemberRepository {
 
     private final JPAQueryFactory queryFactory;
-
-//    @Autowired
-//    public CustomMemberDaoImpl(JPAQueryFactory queryFactory) {
-//        this.queryFactory = queryFactory;
-//    }
 
     @Override
     public Page<MemberInfoResponse> search(String keyword, Pageable pageable) {

@@ -1,4 +1,4 @@
-package com.example.board.adapter.ports.out.persistence.post;
+package com.example.board.infrastructure.persistence.post;
 
 
 import static com.example.board.domain.entity.QComment.comment;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class CustomPostDaoImpl implements CustomPostDao {
+public class CustomPostRepositoryImpl implements CustomPostRepository {
 
     private final JPAQueryFactory queryFactory;
 

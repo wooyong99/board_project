@@ -1,10 +1,10 @@
 package com.example.board.application.service;
 
+import com.example.board.adapter.out.category.CategoryRepositoryAdapter;
+import com.example.board.adapter.out.member.MemberRepositoryAdapter;
+import com.example.board.adapter.out.post.PostRepositoryAdapter;
 import com.example.board.adapter.ports.in.dto.response.post.PostDetailResponse;
 import com.example.board.adapter.ports.in.dto.response.post.PostListResponse;
-import com.example.board.adapter.ports.out.persistence.category.CategoryDao;
-import com.example.board.adapter.ports.out.persistence.member.MemberDao;
-import com.example.board.adapter.ports.out.persistence.post.PostDao;
 import com.example.board.application.port.in.post.DeclarationPostUseCase;
 import com.example.board.application.port.in.post.DeletePostUseCase;
 import com.example.board.application.port.in.post.GetPostDetailUseCase;
@@ -20,9 +20,6 @@ import com.example.board.domain.entity.Member;
 import com.example.board.domain.entity.MemberRoleEnum;
 import com.example.board.domain.entity.Post;
 import com.example.board.infrastructure.exception.AuthorizationException;
-import com.example.board.infrastructure.exception.NotFoundCategoryException;
-import com.example.board.infrastructure.exception.NotFoundMemberException;
-import com.example.board.infrastructure.exception.NotFoundPostException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,57 +30,59 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostService implements GetPostListUseCase, SearchPostUseCase, GetPostDetailUseCase,
     SavePostUseCase, UpdatePostUseCase, DeletePostUseCase, DeclarationPostUseCase, LikePostUseCase {
 
-    private final MemberDao memberDao;
+    private final MemberRepositoryAdapter memberRepositoryAdapter;
 
-    private final PostDao postDao;
+    private final PostRepositoryAdapter postRepositoryAdapter;
 
-    private final CategoryDao categoryDao;
+    private final CategoryRepositoryAdapter categoryRepositoryAdapter;
 
     @Autowired
-    public PostService(MemberDao memberdao, PostDao postDao, CategoryDao categoryDao) {
-        this.memberDao = memberdao;
-        this.postDao = postDao;
-        this.categoryDao = categoryDao;
+    public PostService(MemberRepositoryAdapter memberRepositoryAdapter,
+        PostRepositoryAdapter postRepositoryAdapter,
+        CategoryRepositoryAdapter categoryRepositoryAdapter) {
+        this.memberRepositoryAdapter = memberRepositoryAdapter;
+        this.postRepositoryAdapter = postRepositoryAdapter;
+        this.categoryRepositoryAdapter = categoryRepositoryAdapter;
     }
 
     // 게시글 리스트 조회
     @Transactional(readOnly = true)
     @Override
     public Page<PostListResponse> getPostList(Long categoryId, Pageable pageable) {
-        return postDao.findPostList(categoryId, null, pageable);
+        return postRepositoryAdapter.findPostList(categoryId, null, pageable);
     }
 
     @Transactional(readOnly = true)
     @Override
     public Page<PostListResponse> search(String keyword, Long categoryId, Pageable pageable) {
-        return postDao.findPostList(categoryId, keyword, pageable);
+        return postRepositoryAdapter.findPostList(categoryId, keyword, pageable);
     }
 
     // 게시글 단건 조회
     @Transactional(readOnly = true)
     @Override
     public PostDetailResponse getPost(Long postId) {
-        return postDao.findPost(postId);
+        return postRepositoryAdapter.findPost(postId);
     }
 
     // 게시글 저장
     @Transactional
     @Override
     public void save(PostCreateServiceDto dto, String email) {
-        Member member = findMemberByEmail(email);
-        Category category = findCategoryById(dto.getCategoryId());
+        Member member = memberRepositoryAdapter.findByEmailAndIsDeletedFalse(email);
+        Category category = categoryRepositoryAdapter.findById(dto.getCategoryId());
 
         Post post = new Post(dto.getTitle(), dto.getContent(), member, category);
 
-        postDao.save(post);
+        postRepositoryAdapter.save(post);
     }
 
     // 게시글 수정
     @Transactional
     @Override
     public void update(Long postId, PostUpdateServiceDto dto, String email) {
-        Member member = findMemberByEmail(email);
-        Post post = findPostById(postId);
+        Member member = memberRepositoryAdapter.findByEmailAndIsDeletedFalse(email);
+        Post post = postRepositoryAdapter.findById(postId);
         if (!post.getMember().getEmail().equals(member.getEmail()) && member.getRole()
             .equals(MemberRoleEnum.USER)) {
             throw new AuthorizationException("권한이 없습니다.");
@@ -95,8 +94,8 @@ public class PostService implements GetPostListUseCase, SearchPostUseCase, GetPo
     @Transactional
     @Override
     public void delete(Long postId, String email) {
-        Member member = findMemberByEmail(email);
-        Post post = findPostById(postId);
+        Member member = memberRepositoryAdapter.findByEmailAndIsDeletedFalse(email);
+        Post post = postRepositoryAdapter.findById(postId);
         if (!post.getMember().getEmail().equals(member.getEmail()) && member.getRole()
             .equals(MemberRoleEnum.USER)) {
             throw new AuthorizationException("권한이 없습니다.");
@@ -108,7 +107,7 @@ public class PostService implements GetPostListUseCase, SearchPostUseCase, GetPo
     @Transactional
     @Override
     public void declaration(Long postId) {
-        Post post = findPostById(postId);
+        Post post = postRepositoryAdapter.findById(postId);
         post.delete();    // Soft Delete 방식 적용
         if (post.getMember().getRole().equals(MemberRoleEnum.USER)) {
             post.getMember().updateBlockStatus(true);
@@ -119,25 +118,7 @@ public class PostService implements GetPostListUseCase, SearchPostUseCase, GetPo
     @Transactional
     @Override
     public void like(Long postId) {
-        Post post = findPostById(postId);
+        Post post = postRepositoryAdapter.findById(postId);
         post.increaseLike();
-    }
-
-    private Post findPostById(Long postId) {
-        return postDao.findById(postId).orElseThrow(
-            () -> new NotFoundPostException("존재하지 않는 게시글입니다.")
-        );
-    }
-
-    private Member findMemberByEmail(String email) {
-        return memberDao.findByEmailAndIsDeletedFalse(email).orElseThrow(
-            () -> new NotFoundMemberException("존재하지 않는 사용자입니다.")
-        );
-    }
-
-    private Category findCategoryById(Long categoryId) {
-        return categoryDao.findById(categoryId).orElseThrow(
-            () -> new NotFoundCategoryException("존재하지 않는 카테고리입니다.")
-        );
     }
 }

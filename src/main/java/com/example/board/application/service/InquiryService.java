@@ -1,9 +1,9 @@
 package com.example.board.application.service;
 
+import com.example.board.adapter.out.inquiry.InquiryRepositoryAdapter;
+import com.example.board.adapter.out.member.MemberRepositoryAdapter;
 import com.example.board.adapter.ports.in.dto.response.post.inquiry.InquiryDetailResponse;
 import com.example.board.adapter.ports.in.dto.response.post.inquiry.InquiryListResponse;
-import com.example.board.adapter.ports.out.persistence.inquiry.InquiryDao;
-import com.example.board.adapter.ports.out.persistence.member.MemberDao;
 import com.example.board.application.port.in.inquiry.DeleteInquiryUseCase;
 import com.example.board.application.port.in.inquiry.GetInquiryDetailUseCase;
 import com.example.board.application.port.in.inquiry.GetInquiryListUseCase;
@@ -26,16 +26,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class InquiryService implements SaveInquiryUseCase, DeleteInquiryUseCase,
     GetInquiryListUseCase, GetInquiryDetailUseCase {
 
-    private final InquiryDao inquiryDao;
-    private final MemberDao memberDao;
+    private final InquiryRepositoryAdapter inquiryRepositoryAdapter;
+    private final MemberRepositoryAdapter memberRepositoryAdapter;
     private final PasswordEncoder encoder;
     private final EntityManager em;
 
     @Autowired
-    public InquiryService(InquiryDao inquiryDao, MemberDao memberDao, PasswordEncoder encoder,
+    public InquiryService(InquiryRepositoryAdapter inquiryRepositoryAdapter,
+        MemberRepositoryAdapter memberRepositoryAdapter, PasswordEncoder encoder,
         EntityManager em) {
-        this.inquiryDao = inquiryDao;
-        this.memberDao = memberDao;
+        this.inquiryRepositoryAdapter = inquiryRepositoryAdapter;
+        this.memberRepositoryAdapter = memberRepositoryAdapter;
         this.encoder = encoder;
         this.em = em;
     }
@@ -43,25 +44,25 @@ public class InquiryService implements SaveInquiryUseCase, DeleteInquiryUseCase,
     @Transactional
     @Override
     public void save(InquiryCreateServiceDto dto) {
-        Member member = findMemberByEmail(dto.getEmail());
+        Member member = memberRepositoryAdapter.findByEmailAndIsDeletedFalse(dto.getEmail());
         if (!encoder.matches(dto.getPassword(), member.getPassword())) {
             throw new NotFoundMemberException("존재하지 않는 사용자입니다.");
         }
         if (!member.isBlock()) {
             throw new IllegalArgumentException("차단된 사용자가 아닙니다.");
         }
-        if (inquiryDao.existsByMemberIdAndIsDeletedFalse(member.getId())) {
+        if (inquiryRepositoryAdapter.existsByMemberIdAndIsDeletedFalse(member.getId())) {
             throw new DuplicateInquiryException("이미 차단 해제 문의 내역이 존재합니다.");
         }
         Inquiry inquiry = Inquiry.create(dto.getContent(), member);
 
-        inquiryDao.save(inquiry);
+        inquiryRepositoryAdapter.save(inquiry);
     }
 
     @Transactional
     @Override
     public void delete(Long inquiryId) {
-        Inquiry inquiry = inquiryDao.findByIdAndIsDeletedFalse(inquiryId).orElseThrow(
+        Inquiry inquiry = inquiryRepositoryAdapter.findByIdAndIsDeletedFalse(inquiryId).orElseThrow(
             () -> new NotFoundInquiryException("존재하지 않는 문의 내역입니다.")
         );
         inquiry.delete();     // Soft Delete 방식 적용
@@ -69,22 +70,16 @@ public class InquiryService implements SaveInquiryUseCase, DeleteInquiryUseCase,
         inquiry.getMember().updateBlockStatus(false);
     }
 
-    private Member findMemberByEmail(String email) {
-        return memberDao.findByEmailAndIsDeletedFalse(email).orElseThrow(
-            () -> new NotFoundMemberException("존재하지 않는 사용자입니다.")
-        );
-    }
-
     @Transactional
     @Override
     public Page<InquiryListResponse> findList(Pageable pageable) {
-        return inquiryDao.findList(pageable);
+        return inquiryRepositoryAdapter.findList(pageable);
     }
 
     @Transactional
     @Override
     public InquiryDetailResponse findOne(Long id) {
-        return inquiryDao.findByIdAndIsDeletedFalse(id).orElseThrow(
+        return inquiryRepositoryAdapter.findByIdAndIsDeletedFalse(id).orElseThrow(
             () -> new NotFoundInquiryException("존재하지 않는 문의입니다.")
         ).toDetailResponse();
     }
