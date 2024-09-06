@@ -4,10 +4,10 @@ package com.example.board.infrastructure.persistence.post;
 import static com.example.board.domain.entity.QComment.comment;
 import static com.example.board.domain.entity.QPost.post;
 
-import com.example.board.adapter.ports.in.dto.response.post.PostDetailResponse;
-import com.example.board.adapter.ports.in.dto.response.post.PostListResponse;
-import com.example.board.adapter.ports.in.dto.response.post.QPostDetailResponse;
-import com.example.board.adapter.ports.in.dto.response.post.QPostListResponse;
+import com.example.board.api.controller.post.response.PostDetailResponse;
+import com.example.board.api.controller.post.response.PostListResponse;
+import com.example.board.api.controller.post.response.QPostDetailResponse;
+import com.example.board.api.controller.post.response.QPostListResponse;
 import com.example.board.domain.entity.Comment;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;

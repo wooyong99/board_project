@@ -1,6 +1,6 @@
 package com.example.board.domain.entity;
 
-import com.example.board.adapter.ports.in.dto.response.post.inquiry.InquiryDetailResponse;
+import com.example.board.api.controller.inquiry.response.InquiryDetailResponse;
 import com.example.board.domain.model.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;

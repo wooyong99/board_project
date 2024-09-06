@@ -1,6 +1,6 @@
 package com.example.board.domain.entity;
 
-import com.example.board.adapter.ports.in.dto.response.member.MemberInfoResponse;
+import com.example.board.api.controller.member.response.MemberInfoResponse;
 import com.example.board.domain.model.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

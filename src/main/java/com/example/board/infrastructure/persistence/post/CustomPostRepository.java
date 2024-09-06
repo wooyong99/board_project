@@ -1,7 +1,7 @@
 package com.example.board.infrastructure.persistence.post;
 
-import com.example.board.adapter.ports.in.dto.response.post.PostDetailResponse;
-import com.example.board.adapter.ports.in.dto.response.post.PostListResponse;
+import com.example.board.api.controller.post.response.PostDetailResponse;
+import com.example.board.api.controller.post.response.PostListResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
