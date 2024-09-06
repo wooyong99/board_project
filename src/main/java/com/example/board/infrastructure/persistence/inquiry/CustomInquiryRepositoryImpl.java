@@ -3,8 +3,8 @@ package com.example.board.infrastructure.persistence.inquiry;
 
 import static com.example.board.domain.entity.QInquiry.inquiry;
 
-import com.example.board.adapter.ports.in.dto.response.post.inquiry.InquiryListResponse;
-import com.example.board.adapter.ports.in.dto.response.post.inquiry.QInquiryListResponse;
+import com.example.board.api.controller.inquiry.response.InquiryListResponse;
+import com.example.board.api.controller.inquiry.response.QInquiryListResponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

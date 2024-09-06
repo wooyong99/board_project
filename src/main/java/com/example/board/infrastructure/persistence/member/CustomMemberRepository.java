@@ -1,6 +1,6 @@
 package com.example.board.infrastructure.persistence.member;
 
-import com.example.board.adapter.ports.in.dto.response.member.MemberInfoResponse;
+import com.example.board.api.controller.member.response.MemberInfoResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

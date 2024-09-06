@@ -1,6 +1,6 @@
 package com.example.board.domain.entity;
 
-import com.example.board.application.service.dto.PostUpdateServiceDto;
+import com.example.board.application.usecase.post.dto.UpdatePostServiceDto;
 import com.example.board.domain.model.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -60,7 +60,7 @@ public class Post extends BaseEntity {
         this.category = category;
     }
 
-    public void update(PostUpdateServiceDto request) {
+    public void update(UpdatePostServiceDto request) {
         if (!request.getTitle().equals(this.title)) {
             this.title = request.getTitle();
         }
