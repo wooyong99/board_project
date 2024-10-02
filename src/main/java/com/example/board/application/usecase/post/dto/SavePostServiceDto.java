@@ -10,6 +10,6 @@ public class SavePostServiceDto {
     private String title;
     private String content;
     private Long categoryId;
-    private String email;
-    
+    private Long memberId;
+
 }

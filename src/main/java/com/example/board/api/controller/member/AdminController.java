@@ -1,28 +1,30 @@
 package com.example.board.api.controller.member;
 
-import com.example.board.api.controller.member.request.SignupRequest;
+import com.example.board.api.controller.member.request.AdminSignupRequest;
 import com.example.board.api.controller.member.response.MemberInfoResponse;
 import com.example.board.application.usecase.member.SearchMemberUseCase;
 import com.example.board.application.usecase.member.SignupMemberUseCase;
 import com.example.board.application.usecase.member.UpdateBlockStatusUseCase;
-import com.example.board.application.usecase.member.dto.SearchMemberServiceDto;
-import com.example.board.application.usecase.member.dto.SignupMemberServiceDto;
-import com.example.board.application.usecase.member.dto.UpdateBlockStatusServiceDto;
-import com.example.board.domain.entity.MemberRoleEnum;
-import jakarta.validation.Valid;
+import com.example.board.application.usecase.member.dto.SearchMemberServiceRequest;
+import com.example.board.application.usecase.member.dto.SignupMemberServiceRequest;
+import com.example.board.application.usecase.member.dto.UpdateBlockStatusServiceRequest;
+import com.example.board.domain.entity.RoleEnum;
+import com.example.board.infrastructure.aop.AuthorizationRequired;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/admins")
 public class AdminController {
 
@@ -39,51 +41,50 @@ public class AdminController {
         this.updateBlockStatusUseCase = updateBlockStatusUseCase;
     }
 
-    // 회원가입 페이지 이동
-    @GetMapping("/signupForm")
-    public String singup() {
-        return "admins/signupForm";
-    }
-
-    // 회원가입 기능
-    @PostMapping("/doSignup")
-    public String doSignup(@Valid SignupRequest signupRequest) {
-        SignupMemberServiceDto serviceDto = new SignupMemberServiceDto(signupRequest.getNickname(),
-            signupRequest.getEmail(), signupRequest.getPassword(), MemberRoleEnum.ADMIN);
+    // 관리자 회원가입 기능
+    @PostMapping("/signup")
+    public ResponseEntity signup(@RequestBody AdminSignupRequest adminSignupRequest) {
+        SignupMemberServiceRequest serviceDto = new SignupMemberServiceRequest(
+            adminSignupRequest.getNickname(),
+            adminSignupRequest.getEmail(), adminSignupRequest.getPassword(),
+            adminSignupRequest.getRoles());
         signupMemberUseCase.signup(serviceDto);
 
-        return "redirect:/posts";
+        return ResponseEntity.ok().build();
     }
 
-    // 회원 검색
+    // 회원 검색 ( 관리자 역할 유저만 접근 가능 )
     @GetMapping("/search/members")
-    public String searchMembers(@RequestParam(required = false, name = "keyword") String keyword,
-        @PageableDefault Pageable pageable,
-        Model model) {
-
-        SearchMemberServiceDto serviceDto = new SearchMemberServiceDto(keyword, pageable);
+    @AuthorizationRequired(value = {
+        RoleEnum.EXERCISE_ADMIN}, failureMessage = "관리자만 접근 가능한 페이지입니다.")
+    public ResponseEntity searchMembers(
+        @RequestParam(required = false, name = "keyword") String keyword,
+        @PageableDefault Pageable pageable) {
+        SearchMemberServiceRequest serviceDto = new SearchMemberServiceRequest(keyword, pageable);
         Page<MemberInfoResponse> members = searchMemberUseCase.search(serviceDto);
 
-        model.addAttribute("members", members);
-
-        return "admins/memberList";
+        return ResponseEntity.ok(members);
     }
 
-    // 회원 차단
-    @PostMapping("/members/{memberId}/block")
-    public String blockMember(@PathVariable(name = "memberId") Long memberId) {
-        UpdateBlockStatusServiceDto serviceDto = new UpdateBlockStatusServiceDto(memberId, true);
+    // 회원 차단 ( 관리자 역할 유저만 접근 가능 )
+    @PutMapping("/members/{memberId}/block")
+    @AuthorizationRequired({RoleEnum.EXERCISE_ADMIN})
+    public ResponseEntity blockMember(@PathVariable(name = "memberId") Long memberId) {
+        UpdateBlockStatusServiceRequest serviceDto = new UpdateBlockStatusServiceRequest(memberId,
+            true);
         updateBlockStatusUseCase.updateBlockStatus(serviceDto);
 
-        return "redirect:/admins/search/members";
+        return ResponseEntity.ok().build();
     }
 
-    // 회원 차단 해제
-    @PostMapping("/members/{memberId}/unblock")
-    public String unblockMember(@PathVariable(name = "memberId") Long memberId) {
-        UpdateBlockStatusServiceDto serviceDto = new UpdateBlockStatusServiceDto(memberId, false);
+    // 회원 차단 해제 ( 관리자 역할 유저만 접근 가능 )
+    @PutMapping("/members/{memberId}/unblock")
+    @AuthorizationRequired({RoleEnum.EXERCISE_ADMIN})
+    public ResponseEntity unblockMember(@PathVariable(name = "memberId") Long memberId) {
+        UpdateBlockStatusServiceRequest serviceDto = new UpdateBlockStatusServiceRequest(memberId,
+            false);
         updateBlockStatusUseCase.updateBlockStatus(serviceDto);
 
-        return "redirect:/admins/search/members";
+        return ResponseEntity.ok().build();
     }
 }

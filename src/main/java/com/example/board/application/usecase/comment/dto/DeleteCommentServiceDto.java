@@ -9,6 +9,6 @@ public class DeleteCommentServiceDto {
 
     private Long postId;
     private Long commentId;
-    private String email;
+    private Long memberId;
 
 }

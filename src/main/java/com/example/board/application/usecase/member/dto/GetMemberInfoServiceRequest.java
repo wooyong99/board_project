@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class GetMemberInfoServiceDto {
+public class GetMemberInfoServiceRequest {
 
-    private String email;
-    
+    private Long memberId;
+
 }

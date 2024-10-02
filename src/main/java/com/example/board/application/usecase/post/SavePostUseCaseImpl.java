@@ -28,7 +28,7 @@ public class SavePostUseCaseImpl implements SavePostUseCase {
     @Override
     @Transactional
     public void save(SavePostServiceDto dto) {
-        Member member = memberRepository.findByEmailAndIsDeletedFalse(dto.getEmail());
+        Member member = memberRepository.findByIdAndIsDeletedFalse(dto.getMemberId());
         Category category = categoryRepository.findById(dto.getCategoryId());
 
         Post post = new Post(dto.getTitle(), dto.getContent(), member, category);

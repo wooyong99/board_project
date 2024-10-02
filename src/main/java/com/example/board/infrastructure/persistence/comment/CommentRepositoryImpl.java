@@ -1,8 +1,10 @@
 package com.example.board.infrastructure.persistence.comment;
 
+import com.example.board.api.controller.comment.response.CommentListResponse;
 import com.example.board.domain.entity.Comment;
 import com.example.board.domain.repository.CommentRepository;
 import com.example.board.exception.NotFoundCommentException;
+import java.util.List;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -26,5 +28,10 @@ public class CommentRepositoryImpl implements CommentRepository {
         return commentJpaRepository.findByIdAndPostId(commentId, postId).orElseThrow(
             () -> new NotFoundCommentException("존재하지 않는 댓글입니다.")
         );
+    }
+
+    @Override
+    public List<CommentListResponse> findCommentByPost(Long postId) {
+        return customCommentRepository.findCommentByPost(postId);
     }
 }

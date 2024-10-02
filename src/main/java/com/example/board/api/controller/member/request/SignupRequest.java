@@ -14,6 +14,7 @@ public class SignupRequest {
 
     @NotBlank
     private String password;
+    ;
 
     public SignupRequest() {
     }

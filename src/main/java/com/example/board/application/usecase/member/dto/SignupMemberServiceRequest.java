@@ -1,16 +1,17 @@
 package com.example.board.application.usecase.member.dto;
 
-import com.example.board.domain.entity.MemberRoleEnum;
+import com.example.board.domain.entity.RoleEnum;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class SignupMemberServiceDto {
+public class SignupMemberServiceRequest {
 
     private String nickname;
     private String email;
     private String password;
-    private MemberRoleEnum role;
+    private List<RoleEnum> roles;
 
 }

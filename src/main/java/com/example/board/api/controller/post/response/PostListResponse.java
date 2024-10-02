@@ -1,5 +1,6 @@
 package com.example.board.api.controller.post.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
 import java.time.LocalDateTime;
 import lombok.Data;
@@ -12,7 +13,7 @@ public class PostListResponse {
     private String title;
 
     private String content;
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createdAt;
 
     private Long commentSize;

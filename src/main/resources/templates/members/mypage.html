@@ -22,53 +22,7 @@
   <title>[[${memberInfo.email}]] 마이페이지</title>
 </head>
 <body>
-<div class="container mx-auto flex flex-column gap-3 border-b-2 pb-3 px-4">
-  <div class="flex border-b-2 pl-5 pb-3 mt-4">
-    <h1 class="text-3xl flex items-center">[[${memberInfo.email}]] 사용자의 마이페이지</h1>
-  </div>
-  <div><span class="btn btn-primary">회원번호 </span> &nbsp;&nbsp; [[${memberInfo.memberId}]]</div>
-  <div><span class="btn btn-primary">닉네임 </span> &nbsp;&nbsp; [[${memberInfo.nickname}]]</div>
-  <div><span class="btn btn-primary">이메일</span> &nbsp;&nbsp; [[${memberInfo.email}]]</div>
-  <div><span class="btn btn-primary">권한</span> &nbsp;&nbsp;[[${memberInfo.role}]]</div>
-  <div class="justify-end">
-    <span class="btn btn-primary">생성일자</span>
-    &nbsp;&nbsp;[[${#temporals.format(memberInfo.createdAt, 'YYYY-MM-dd HH:mm')}]]
-  </div>
-</div>
-<div class="container mx-auto flex justify-end my-3">
-  <form th:action="@{/members/updateNicknameForm}"
-        method="get" class="m-0">
-    <button class="btn btn-danger" type="submit"
-            th:disabled="${!(#authorization.expression('hasAuthority(''ADMIN'')') ||
-	                                (#authorization.expr('isAuthenticated()') &&
-	                                #authentication.principal != null))}">
-      닉네임 변경
-    </button>
-  </form>
-  <form th:action="@{/members/updatePasswordForm}"
-        method="get" class="m-0">
-    <button class="btn btn-danger" type="submit"
-            th:disabled="${!(#authorization.expression('hasAuthority(''ADMIN'')') ||
-	                                (#authorization.expr('isAuthenticated()') &&
-	                                #authentication.principal != null))}">
-      비밀번호 변경
-    </button>
-  </form>
-  <form th:action="@{/posts}" method="get" class="m-0">
-    <button class="btn btn-primary" type="submit">
-      홈으로
-    </button>
-  </form>
-  <form th:action="@{/members/delete}"
-        method="post" class="m-0">
-    <button class="btn btn-danger" type="submit"
-            th:disabled="${!(#authorization.expression('hasAuthority(''ADMIN'')') ||
-	                                (#authorization.expr('isAuthenticated()') &&
-	                                #authentication.principal != null))}">
-      회원 탈퇴
-    </button>
-  </form>
-</div>
+
 
 </body>
 </html>

@@ -1,6 +1,8 @@
 package com.example.board.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -20,14 +22,23 @@ public class GlobalExceptionHandler extends RuntimeException {
         return "inquiries/inquiryForm";
     }
 
+    // 리소스 접근 실패 핸들러
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity handleAuthorizationException(AuthorizationException exception) {
+        log.error(exception.getMessage());
+        return ResponseEntity
+            .status(HttpStatus.FORBIDDEN)
+            .body(exception.getMessage());
+    }
+
     // 비밀번호 변경 실패 핸들러
     @ExceptionHandler({InconsistentOriginPasswordException.class,
         InconsistentNewPasswordException.class})
-    public String handleUpdatePasswordException(Exception e, Model model) {
+    public ResponseEntity<String> handleUpdatePasswordException(Exception e) {
         log.error(e.getMessage());
-        model.addAttribute("errorMessage", "\"" + e.getMessage() + "\"");
-
-        return "members/updatePasswordForm";
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(e.getMessage());
     }
 
     // 회원가입 실패 핸들러
@@ -39,22 +50,32 @@ public class GlobalExceptionHandler extends RuntimeException {
         return "members/signupForm";
     }
 
-    // 로그인 실패 핸들러
-    @ExceptionHandler({InCorrectPasswordException.class, IllegalArgumentException.class})
-    public String handlerInCorrectPasswordException(InCorrectPasswordException e, Model model) {
-        log.error(e.getMessage());
-        model.addAttribute("errorMessage", "\"" + e.getMessage() + "\"");
+    // 차단 사용자 로그인 실패 핸들러
+    @ExceptionHandler({BlockMemberException.class})
+    public ResponseEntity handlerBlockMemberException(BlockMemberException exception) {
+        log.error(exception.getMessage());
+        return ResponseEntity
+            .status(HttpStatus.FORBIDDEN)
+            .body(exception.getMessage());
+    }
 
-        return "members/loginForm";
+    // 로그인 실패 핸들러
+    @ExceptionHandler({LoginFailedException.class, InCorrectPasswordException.class,
+        IllegalArgumentException.class})
+    public ResponseEntity handlerInCorrectPasswordException(Exception exception) {
+        log.error(exception.getMessage());
+        return ResponseEntity
+            .status(HttpStatus.UNAUTHORIZED)
+            .body(exception.getMessage());
     }
 
     // 회원 조회 실패 핸들러
     @ExceptionHandler(NotFoundMemberException.class)
-    public String handlerNotFoundBoardException(NotFoundMemberException e, Model model) {
+    public ResponseEntity<String> handlerNotFoundBoardException(NotFoundMemberException e) {
         log.error(e.getMessage());
-        model.addAttribute("errorMessage", "\"" + e.getMessage() + "\"");
-
-        return "members/loginForm";
+        return ResponseEntity
+            .status(HttpStatus.UNAUTHORIZED)
+            .body(e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

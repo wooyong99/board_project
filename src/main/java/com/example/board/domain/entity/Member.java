@@ -5,12 +5,13 @@ import com.example.board.domain.model.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -31,12 +32,12 @@ public class Member extends BaseEntity {
 
     private LocalDateTime blockedAt;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private MemberRoleEnum role;
-
     @ColumnDefault("false")
     private boolean isDeleted;
+
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST,
+        CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<MemberRole> roles = new ArrayList<>();
 
     @OneToOne(mappedBy = "member", cascade = {CascadeType.PERSIST,
         CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -45,16 +46,15 @@ public class Member extends BaseEntity {
     protected Member() {
     }
 
-    public Member(String nickname, String email, String password, MemberRoleEnum role) {
+    public Member(String nickname, String email, String password) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
-        this.role = role;
     }
 
     public static Member create(String nickname, String email, String password,
-        MemberRoleEnum role) {
-        return new Member(nickname, email, password, role);
+        RoleEnum role) {
+        return new Member(nickname, email, password);
     }
 
     public MemberInfoResponse toMemberInfoResponse() {
@@ -63,7 +63,7 @@ public class Member extends BaseEntity {
             .nickname(this.nickname)
             .email(this.email)
             .createdAt(this.getCreatedAt())
-            .role(this.role)
+            .role(this.roles.get(0))
             .isBlock(this.isBlock)
             .build();
     }

@@ -7,7 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class SaveCommentServiceDto {
 
-    private String email;
+    private Long memberId;
     private Long postId;
     private String content;
 

@@ -5,8 +5,10 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class DeleteMemberServiceDto {
+public class LoginServiceRequest {
 
     private String email;
+
+    private String password;
 
 }

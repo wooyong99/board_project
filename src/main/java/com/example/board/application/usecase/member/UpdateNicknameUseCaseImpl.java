@@ -1,6 +1,6 @@
 package com.example.board.application.usecase.member;
 
-import com.example.board.application.usecase.member.dto.UpdateNicknameServiceDto;
+import com.example.board.application.usecase.member.dto.UpdateNicknameServiceRequest;
 import com.example.board.domain.entity.Member;
 import com.example.board.domain.repository.MemberRepository;
 import org.springframework.stereotype.Service;
@@ -17,8 +17,8 @@ public class UpdateNicknameUseCaseImpl implements UpdateNicknameUseCase {
 
     @Override
     @Transactional
-    public void updateNickname(UpdateNicknameServiceDto dto) {
-        Member member = memberRepository.findByEmailAndIsDeletedFalse(dto.getEmail());
+    public void updateNickname(UpdateNicknameServiceRequest dto) {
+        Member member = memberRepository.findByIdAndIsDeletedFalse(dto.getMemberId());
         member.updateNickname(dto.getNewNickname());
     }
 }

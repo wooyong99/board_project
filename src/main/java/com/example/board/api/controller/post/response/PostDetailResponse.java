@@ -1,9 +1,8 @@
 package com.example.board.api.controller.post.response;
 
-import com.example.board.domain.entity.Comment;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
 import java.time.LocalDateTime;
-import java.util.List;
 import lombok.Data;
 
 @Data
@@ -12,11 +11,11 @@ public class PostDetailResponse {
     private Long id;
     private String title;
     private String content;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createdAt;
     private Long likes;
     private String category;
     private String author;
-    private List<Comment> comments;
 
     public PostDetailResponse() {
     }
@@ -31,10 +30,6 @@ public class PostDetailResponse {
         this.likes = likes;
         this.category = category;
         this.author = author;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
     }
 
 }

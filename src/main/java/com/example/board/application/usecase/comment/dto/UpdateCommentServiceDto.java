@@ -9,7 +9,7 @@ public class UpdateCommentServiceDto {
 
     private Long postId;
     private Long commentId;
-    private String email;
+    private Long memberId;
     private String content;
 
 }

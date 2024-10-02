@@ -28,14 +28,21 @@ public class MemberRepositoryImpl implements MemberRepository {
     @Override
     public Member findById(Long memberId) {
         return memberJpaRepository.findById(memberId).orElseThrow(
-            () -> new NotFoundMemberException("존재하지 않는 사용자입니다.")
+            () -> new NotFoundMemberException("존재하지 않는 회원입니다.")
+        );
+    }
+
+    @Override
+    public Member findByIdAndIsDeletedFalse(long id) {
+        return memberJpaRepository.findByIdAndIsDeletedFalse(id).orElseThrow(
+            () -> new NotFoundMemberException("존재하지 않는 회원입니다.")
         );
     }
 
     @Override
     public Member findByEmailAndIsDeletedFalse(String email) {
         return memberJpaRepository.findByEmailAndIsDeletedFalse(email).orElseThrow(
-            () -> new NotFoundMemberException("존재하지 않는 사용자입니다.")
+            () -> new NotFoundMemberException("존재하지 않는 회원입니다.")
         );
     }
 
@@ -45,5 +52,10 @@ public class MemberRepositoryImpl implements MemberRepository {
 
     public boolean existsByEmailAndIsDeletedFalse(String email) {
         return memberJpaRepository.existsByEmailAndIsDeletedFalse(email);
+    }
+
+    @Override
+    public Member findWithRoleByIdAndIsDeletedFalse(long id) {
+        return customMemberRepository.findWithRoleByIdAndIsDeletedFalse(id);
     }
 }

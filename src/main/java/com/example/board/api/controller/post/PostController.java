@@ -13,26 +13,33 @@ import com.example.board.application.usecase.post.SavePostUseCase;
 import com.example.board.application.usecase.post.SearchPostUseCase;
 import com.example.board.application.usecase.post.UpdatePostUseCase;
 import com.example.board.application.usecase.post.dto.DeclarationPostServiceDto;
+import com.example.board.application.usecase.post.dto.DeletePostServiceDto;
 import com.example.board.application.usecase.post.dto.GetPostDetailServiceDto;
 import com.example.board.application.usecase.post.dto.GetPostListServiceDto;
 import com.example.board.application.usecase.post.dto.LikePostServiceDto;
 import com.example.board.application.usecase.post.dto.SavePostServiceDto;
 import com.example.board.application.usecase.post.dto.SearchPostServiceDto;
 import com.example.board.application.usecase.post.dto.UpdatePostServiceDto;
+import com.example.board.domain.entity.RoleEnum;
+import com.example.board.infrastructure.aop.AuthorizationRequired;
 import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/posts")
 public class PostController {
 
@@ -63,103 +70,88 @@ public class PostController {
 
     // 게시글 리스트 조회
     @GetMapping
-    public String postList(@RequestParam(required = false, name = "categoryId") Long categoryId,
-        @PageableDefault Pageable pageable, Model model) {
+    public ResponseEntity postList(
+        @RequestParam(required = false, name = "categoryId") Long categoryId,
+        @PageableDefault Pageable pageable) {
         GetPostListServiceDto serviceDto = new GetPostListServiceDto(categoryId, pageable);
         Page<PostListResponse> posts = getPostListUseCase.getPostList(serviceDto);
 
-        model.addAttribute("posts", posts);
-        model.addAttribute("categoryId", categoryId);
-
-        return "posts/list";
+        return ResponseEntity.ok(posts);
     }
 
     // 게시글 검색
     @GetMapping("/search")
-    public String searchPost(@RequestParam(required = false, name = "keyword") String keyword,
+    public ResponseEntity searchPost(
+        @RequestParam(required = false, name = "keyword") String keyword,
         @RequestParam(required = false, name = "categoryId") Long categoryId,
         @PageableDefault Pageable pageable, Model model) {
         SearchPostServiceDto serviceDto = new SearchPostServiceDto(keyword, categoryId, pageable);
         Page<PostListResponse> posts = searchPostUseCase.search(serviceDto);
 
-        model.addAttribute("posts", posts);
-        model.addAttribute("categoryId", categoryId);
-
-        return "posts/list";
-    }
-
-    // 게시글 등록 페이지 이동
-    @GetMapping("/registerForm")
-    public String registerFreeBoardForm() {
-        return "posts/registerForm";
+        return ResponseEntity.ok(posts);
     }
 
     // 게시글 등록
-    @PostMapping("/register")
-    public String registerFreeBoard(PostCreateRequest postCreateRequest, Principal principal) {
+    @PostMapping
+    @AuthorizationRequired({RoleEnum.EXERCISE_ADMIN, RoleEnum.USER})
+    public ResponseEntity<Object> createPost(@RequestBody PostCreateRequest postCreateRequest,
+        Principal principal) {
         SavePostServiceDto serviceDto = new SavePostServiceDto(postCreateRequest.getTitle(),
-            postCreateRequest.getContent(), postCreateRequest.getCategoryId(), principal.getName());
+            postCreateRequest.getContent(), postCreateRequest.getCategoryId(),
+            Long.parseLong(principal.getName()));
         savePostUseCase.save(serviceDto);
 
-        return "redirect:/posts";
+        return ResponseEntity.ok().build();
     }
 
     // 게시글 상세보기
     @GetMapping("/{postId}")
-    public String detailPost(@PathVariable(name = "postId") Long postId, Model model) {
+    public ResponseEntity detailPost(@PathVariable(name = "postId") Long postId) {
         GetPostDetailServiceDto serviceDto = new GetPostDetailServiceDto(postId);
-        PostDetailResponse post = getPostDetailUseCase.getPost(serviceDto);
+        PostDetailResponse postDetail = getPostDetailUseCase.getPost(serviceDto);
 
-        model.addAttribute("post", post);
-
-        return "posts/detail";
-    }
-
-    // 게시글 수정 페이지 이동
-    @GetMapping("/{postId}/updateForm")
-    public String updateForm(@PathVariable(name = "postId") Long postId, Model model) {
-        GetPostDetailServiceDto serviceDto = new GetPostDetailServiceDto(postId);
-        PostDetailResponse post = getPostDetailUseCase.getPost(serviceDto);
-
-        model.addAttribute("post", post);
-
-        return "posts/updateForm";
+        return ResponseEntity.ok(postDetail);
     }
 
     // 게시글 수정
-    @PostMapping("/{postId}/update")
-    public String updatePost(@PathVariable(name = "postId") Long postId,
-        PostUpdateRequest postUpdateRequest, Principal principal) {
+    @PutMapping("/{postId}")
+    @AuthorizationRequired({RoleEnum.EXERCISE_ADMIN, RoleEnum.USER})
+    public ResponseEntity updatePost(@PathVariable(name = "postId") Long postId,
+        @RequestBody PostUpdateRequest postUpdateRequest, Principal principal) {
         UpdatePostServiceDto serviceDto = new UpdatePostServiceDto(postUpdateRequest.getTitle(),
-            postUpdateRequest.getContent(), postId, principal.getName());
+            postUpdateRequest.getContent(), postId, Long.parseLong(principal.getName()));
         updatePostUseCase.update(serviceDto);
 
-        return "redirect:/posts";
+        return ResponseEntity.ok().build();
     }
 
     // 게시글 삭제
-    @PostMapping("/{postId}/delete")
-    public String deletePost(@PathVariable(name = "postId") Long postId, Principal principal) {
-        deletePostUseCase.delete(postId, principal.getName());
+    @DeleteMapping("/{postId}")
+    @AuthorizationRequired({RoleEnum.EXERCISE_ADMIN, RoleEnum.USER})
+    public ResponseEntity deletePost(@PathVariable(name = "postId") Long postId,
+        Principal principal) {
+        DeletePostServiceDto serviceDto = new DeletePostServiceDto(postId,
+            Long.parseLong(principal.getName()));
+        deletePostUseCase.delete(serviceDto);
 
-        return "redirect:/posts";
+        return ResponseEntity.noContent().build();
     }
 
     // 게시글 신고하기
-    @PostMapping("/{postId}/declaration")
-    public String inquiryPost(@PathVariable(name = "postId") Long postId) {
+    @PutMapping("/{postId}/declaration")
+    public ResponseEntity inquiryPost(@PathVariable(name = "postId") Long postId) {
         DeclarationPostServiceDto serviceDto = new DeclarationPostServiceDto(postId);
         declarationPostUseCase.declaration(serviceDto);
 
-        return "redirect:/posts";
+        return ResponseEntity.noContent().build();
     }
 
     // 게시글 좋아요
-    @PostMapping("{postId}/like")
-    public String likePost(@PathVariable(name = "postId") Long postId) {
+    @PostMapping("/{postId}/like")
+    public ResponseEntity likePost(@PathVariable(name = "postId") Long postId) {
         LikePostServiceDto serviceDto = new LikePostServiceDto(postId);
-        likePostUseCase.like(serviceDto);
+        Long response = likePostUseCase.like(serviceDto);
 
-        return "redirect:/posts/" + postId;
+        return ResponseEntity.ok(response);
     }
 }

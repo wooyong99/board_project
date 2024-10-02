@@ -1,8 +1,8 @@
 package com.example.board.application.usecase.member;
 
-import com.example.board.application.usecase.member.dto.UpdateBlockStatusServiceDto;
+import com.example.board.application.usecase.member.dto.UpdateBlockStatusServiceRequest;
 
 public interface UpdateBlockStatusUseCase {
 
-    void updateBlockStatus(UpdateBlockStatusServiceDto dto);
+    void updateBlockStatus(UpdateBlockStatusServiceRequest dto);
 }

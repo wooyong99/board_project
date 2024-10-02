@@ -1,6 +1,7 @@
 package com.example.board.api.controller.inquiry.response;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
 import java.time.LocalDateTime;
 import lombok.Builder;
@@ -12,9 +13,11 @@ public class InquiryListResponse {
     private Long id;
     private String nickname;
     private String email;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime blockedAt;
-    private boolean isAuthorBlock;
+    private Boolean isAuthorBlock;
     private Long memberId;
 
     public InquiryListResponse() {

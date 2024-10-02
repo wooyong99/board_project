@@ -28,7 +28,7 @@ public class SaveCommentUseCaseImpl implements SaveCommentUseCase {
     @Transactional
     public void save(SaveCommentServiceDto dto) {
         Post post = postRepository.findById(dto.getPostId());
-        Member member = memberRepository.findByEmailAndIsDeletedFalse(dto.getEmail());
+        Member member = memberRepository.findByIdAndIsDeletedFalse(dto.getMemberId());
         Comment comment = Comment.create(dto.getContent(), post, member);
         commentRepository.save(comment);
     }

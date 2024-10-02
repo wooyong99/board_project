@@ -1,8 +1,8 @@
 package com.example.board.application.usecase.member;
 
-import com.example.board.application.usecase.member.dto.DeleteMemberServiceDto;
+import com.example.board.application.usecase.member.dto.DeleteMemberServiceRequest;
 
 public interface DeleteMemberUseCase {
 
-    void delete(DeleteMemberServiceDto dto);
+    void delete(DeleteMemberServiceRequest dto);
 }

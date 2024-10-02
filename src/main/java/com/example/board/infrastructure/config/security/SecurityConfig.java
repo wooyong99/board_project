@@ -1,23 +1,53 @@
 package com.example.board.infrastructure.config.security;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final TokenProvider tokenProvider;
     private final CustomUserDetailsService customUserDetailsService;
+    private final JwtFilter jwtFilter;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+
+
+    public SecurityConfig(TokenProvider tokenProvider,
+        CustomUserDetailsService customUserDetailsService, JwtFilter jwtFilter,
+        AuthenticationEntryPoint authenticationEntryPoint,
+        JwtAccessDeniedHandler jwtAccessDeniedHandler
+    ) {
+        this.tokenProvider = tokenProvider;
+        this.customUserDetailsService = customUserDetailsService;
+        this.jwtFilter = jwtFilter;
+        this.authenticationEntryPoint = authenticationEntryPoint;
+        this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+            .requestMatchers("/auth/login")
+            .requestMatchers("/auth/reissue")
+            .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+    }
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
@@ -29,8 +59,14 @@ public class SecurityConfig {
     }
 
     @Bean
-    AuthenticationFailureHandler customAuthFailureHandler() {
+    public AuthenticationFailureHandler customAuthFailureHandler() {
         return new CustomAuthFailureHandler();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+        AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
@@ -39,32 +75,25 @@ public class SecurityConfig {
     }
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
+    SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager)
+        throws Exception {
+        http
+            .csrf(AbstractHttpConfigurer::disable)
+            .cors(AbstractHttpConfigurer::disable)
+            .httpBasic(AbstractHttpConfigurer::disable)
+            .formLogin(AbstractHttpConfigurer::disable)
+            .anonymous(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/members/loginForm", "/members/signupForm").permitAll()
-                .requestMatchers("/posts/*register").authenticated()
-                .requestMatchers("/posts/*registerForm").authenticated()
-                .requestMatchers("/posts/*update").authenticated()
-                .requestMatchers("/posts/*updateForm").authenticated()
-                .requestMatchers("/posts/*delete").authenticated()
-                .requestMatchers(HttpMethod.GET, "/inquiry").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/inquiry/*/delete").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/admins/search/members").hasAuthority("ADMIN")
-                .anyRequest().permitAll()
+                .requestMatchers("/**").permitAll()
+                .anyRequest().authenticated()
             )
-            .formLogin(form -> form
-                .loginPage("/members/loginForm")
-                .loginProcessingUrl("/members/doLogin")
-                .defaultSuccessUrl("/posts")
-                .failureUrl("/members/loginForm")
-                .failureHandler(new CustomAuthFailureHandler())
+            .sessionManagement(sessionManagement ->
+                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class
             )
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/posts")
-                .invalidateHttpSession(true)
-            );
+            .exceptionHandling(exceptionHandling ->
+                exceptionHandling.authenticationEntryPoint(authenticationEntryPoint)
+                    .accessDeniedHandler(jwtAccessDeniedHandler));
         return http.build();
     }
 }

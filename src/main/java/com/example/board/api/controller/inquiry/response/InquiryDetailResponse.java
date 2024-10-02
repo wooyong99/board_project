@@ -1,5 +1,6 @@
 package com.example.board.api.controller.inquiry.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +10,7 @@ public class InquiryDetailResponse {
 
     private Long id;
     private String content;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createdAt;
     private String author;
 

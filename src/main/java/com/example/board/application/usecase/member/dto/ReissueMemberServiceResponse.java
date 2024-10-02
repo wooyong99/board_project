@@ -5,10 +5,12 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class UpdatePasswordServiceDto {
+public class ReissueMemberServiceResponse {
 
-    private String originPassword;
-    private String newPassword;
-    private String newPasswordConfirm;
     private String email;
+    private String nickname;
+    private String accessToken;
+    private Boolean isBlocked;
+    private Boolean isAdmin;
+
 }

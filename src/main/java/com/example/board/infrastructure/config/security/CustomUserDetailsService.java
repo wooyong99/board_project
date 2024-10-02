@@ -19,9 +19,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member member = memberJpaRepository.findByEmailAndIsDeletedFalse(username)
             .orElseThrow(() -> new BadCredentialsException("이메일, 비밀번호를 확인해주세요."));
-        if (member.isBlock()) {
-            throw new BadCredentialsException("차단된 사용자입니다. 관리자에게 문의해주세요.");
-        }
         return new CustomDetails(member);
     }
 

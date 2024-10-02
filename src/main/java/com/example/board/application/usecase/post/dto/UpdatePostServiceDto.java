@@ -10,6 +10,6 @@ public class UpdatePostServiceDto {
     private String title;
     private String content;
     private Long postId;
-    private String email;
-    
+    private Long memberId;
+
 }

@@ -8,7 +8,6 @@ import com.example.board.api.controller.post.response.PostDetailResponse;
 import com.example.board.api.controller.post.response.PostListResponse;
 import com.example.board.api.controller.post.response.QPostDetailResponse;
 import com.example.board.api.controller.post.response.QPostListResponse;
-import com.example.board.domain.entity.Comment;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -45,14 +44,6 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
             )
             .fetchOne();
 
-        List<Comment> comments = queryFactory.selectFrom(comment)
-            .where(
-                comment.post.id.eq(postId),
-                comment.isDeleted.isFalse()
-            )
-            .fetch();
-
-        response.setComments(comments);
         return response;
     }
 
@@ -96,6 +87,7 @@ public class CustomPostRepositoryImpl implements CustomPostRepository {
             .from(post)
             .where(
                 categoryIdEq(categoryId),
+                titleContains(keyword),
                 post.isDeleted.isFalse()
             )
             .fetchOne();

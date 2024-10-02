@@ -16,4 +16,8 @@ public interface MemberRepository {
     Page<MemberInfoResponse> search(String keyword, Pageable pageable);
 
     Member findById(Long memberId);
+
+    Member findByIdAndIsDeletedFalse(long id);
+
+    Member findWithRoleByIdAndIsDeletedFalse(long id);
 }

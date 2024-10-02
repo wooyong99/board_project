@@ -1,8 +1,8 @@
 package com.example.board.application.usecase.member;
 
-import com.example.board.application.usecase.member.dto.SignupMemberServiceDto;
+import com.example.board.application.usecase.member.dto.SignupMemberServiceRequest;
 
 public interface SignupMemberUseCase {
 
-    void signup(SignupMemberServiceDto dto);
+    void signup(SignupMemberServiceRequest dto);
 }

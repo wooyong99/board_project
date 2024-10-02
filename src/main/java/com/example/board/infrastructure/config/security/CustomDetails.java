@@ -20,10 +20,29 @@ public class CustomDetails implements UserDetails {
         collect.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {
-                return member.getRole().toString();
+                return member.getRoles().toString();
             }
         });
         return collect;
+    }
+
+    public boolean isAdmin() {
+        return getAuthorities().stream()
+            .filter(e -> e.getAuthority().equals("ADMIN"))
+            .findFirst()
+            .isPresent();
+    }
+
+    public Long getId() {
+        return member.getId();
+    }
+
+    public String getNickname() {
+        return member.getNickname();
+    }
+
+    public boolean isBlocked() {
+        return member.isBlock();
     }
 
     @Override

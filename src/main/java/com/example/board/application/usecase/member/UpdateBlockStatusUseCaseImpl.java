@@ -1,6 +1,6 @@
 package com.example.board.application.usecase.member;
 
-import com.example.board.application.usecase.member.dto.UpdateBlockStatusServiceDto;
+import com.example.board.application.usecase.member.dto.UpdateBlockStatusServiceRequest;
 import com.example.board.domain.entity.Member;
 import com.example.board.domain.repository.MemberRepository;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class UpdateBlockStatusUseCaseImpl implements UpdateBlockStatusUseCase {
 
     @Override
     @Transactional
-    public void updateBlockStatus(UpdateBlockStatusServiceDto dto) {
+    public void updateBlockStatus(UpdateBlockStatusServiceRequest dto) {
         Member member = memberRepository.findById(dto.getMemberId());
         if (dto.isBlock()) {
             member.updateBlockedAt();

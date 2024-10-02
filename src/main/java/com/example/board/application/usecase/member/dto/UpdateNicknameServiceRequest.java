@@ -5,9 +5,9 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class UpdateBlockStatusServiceDto {
+public class UpdateNicknameServiceRequest {
+
+    private String newNickname;
 
     private Long memberId;
-    private boolean isBlock;
-    
 }

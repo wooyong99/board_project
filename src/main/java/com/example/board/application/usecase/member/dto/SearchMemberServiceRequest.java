@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 
 @Data
 @AllArgsConstructor
-public class SearchMemberServiceDto {
+public class SearchMemberServiceRequest {
 
     private String keyword;
     private Pageable pageable;
-    
+
 }

@@ -4,5 +4,5 @@ import com.example.board.application.usecase.post.dto.LikePostServiceDto;
 
 public interface LikePostUseCase {
 
-    void like(LikePostServiceDto dto);
+    Long like(LikePostServiceDto dto);
 }

@@ -17,8 +17,8 @@ public class LikePostUseCaseImpl implements LikePostUseCase {
 
     @Override
     @Transactional
-    public void like(LikePostServiceDto dto) {
+    public Long like(LikePostServiceDto dto) {
         Post post = postRepository.findById(dto.getPostId());
-        post.increaseLike();
+        return post.increaseLike();
     }
 }

@@ -1,6 +1,6 @@
 package com.example.board.application.usecase.member;
 
-import com.example.board.application.usecase.member.dto.UpdatePasswordServiceDto;
+import com.example.board.application.usecase.member.dto.UpdatePasswordServiceRequest;
 import com.example.board.domain.entity.Member;
 import com.example.board.domain.repository.MemberRepository;
 import com.example.board.exception.InconsistentNewPasswordException;
@@ -22,8 +22,8 @@ public class UpdatePasswordUseCaseImpl implements UpdatePasswordUseCase {
 
     @Override
     @Transactional
-    public void updatePassword(UpdatePasswordServiceDto dto) {
-        Member member = memberRepository.findByEmailAndIsDeletedFalse(dto.getEmail());
+    public void updatePassword(UpdatePasswordServiceRequest dto) {
+        Member member = memberRepository.findByIdAndIsDeletedFalse(dto.getMemberId());
         if (!encoder.matches(dto.getOriginPassword(), member.getPassword())) {
             throw new InconsistentOriginPasswordException("기존 비밀번호가 일치하지 않습니다.");
         }

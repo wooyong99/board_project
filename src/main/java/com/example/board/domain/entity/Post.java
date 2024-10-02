@@ -69,8 +69,9 @@ public class Post extends BaseEntity {
         }
     }
 
-    public void increaseLike() {
+    public Long increaseLike() {
         this.likes++;
+        return this.likes;
     }
 
     public void delete() {

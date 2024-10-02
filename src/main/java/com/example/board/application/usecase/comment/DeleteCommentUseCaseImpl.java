@@ -3,7 +3,7 @@ package com.example.board.application.usecase.comment;
 import com.example.board.application.usecase.comment.dto.DeleteCommentServiceDto;
 import com.example.board.domain.entity.Comment;
 import com.example.board.domain.entity.Member;
-import com.example.board.domain.entity.MemberRoleEnum;
+import com.example.board.domain.entity.RoleEnum;
 import com.example.board.domain.repository.CommentRepository;
 import com.example.board.domain.repository.MemberRepository;
 import com.example.board.exception.AuthorizationException;
@@ -25,10 +25,10 @@ public class DeleteCommentUseCaseImpl implements DeleteCommentUseCase {
     @Override
     @Transactional
     public void delete(DeleteCommentServiceDto dto) {
-        Member member = memberRepository.findByEmailAndIsDeletedFalse(dto.getEmail());
+        Member member = memberRepository.findByIdAndIsDeletedFalse(dto.getMemberId());
         Comment comment = commentRepository.findByIdAndPostId(dto.getCommentId(), dto.getPostId());
-        if (!member.getEmail().equals(comment.getMember().getEmail()) && member.getRole()
-            .equals(MemberRoleEnum.USER)) {
+        if (!member.getEmail().equals(comment.getMember().getEmail()) && member.getRoles()
+            .equals(RoleEnum.USER)) {
             throw new AuthorizationException("권한이 없습니다.");
         }
         comment.delete();     // Soft Delete 방식 적용

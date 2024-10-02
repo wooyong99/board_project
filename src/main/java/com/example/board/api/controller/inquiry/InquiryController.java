@@ -15,13 +15,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
+@RequestMapping("/inquiries")
 public class InquiryController {
 
     private final SaveInquiryUseCase saveInquiryUseCase;
@@ -40,51 +43,42 @@ public class InquiryController {
         this.getInquiryListUseCase = getInquiryListUseCase;
     }
 
-    // 차단 문의 페이지 이동
-    @GetMapping("/inquiryForm")
-    public String registerInquiryForm() {
-        return "inquiries/inquiryForm";
-    }
-
     // 차단 문의
-    @PostMapping("/inquiry")
-    public String saveInquiry(InquiryCreateRequest inquiryCreateRequest) {
+    @PostMapping
+    public ResponseEntity saveInquiry(@RequestBody InquiryCreateRequest inquiryCreateRequest) {
         SaveInquiryServiceDto serviceDto = new SaveInquiryServiceDto(
             inquiryCreateRequest.getEmail(), inquiryCreateRequest.getPassword(),
             inquiryCreateRequest.getContent()
         );
         saveInquiryUseCase.save(serviceDto);
-        return "members/loginForm";
+
+        return ResponseEntity.noContent().build();
     }
 
     // 문의 게시글 리스트 조회
-    @GetMapping("/inquiry")
-    public String getInquiry(@PageableDefault Pageable pageable, Model model) {
+    @GetMapping
+    public ResponseEntity getInquiry(@PageableDefault Pageable pageable) {
         GetInquiryListServiceDto serviceDto = new GetInquiryListServiceDto(pageable);
         Page<InquiryListResponse> inquiries = getInquiryListUseCase.findList(serviceDto);
 
-        model.addAttribute("inquiries", inquiries);
-
-        return "inquiries/list";
+        return ResponseEntity.ok(inquiries);
     }
 
     // 문의 게시글 단건 조회
-    @GetMapping("/inquiry/{inquiryId}")
-    public String getInquiry(@PathVariable(name = "inquiryId") Long inquiryId, Model model) {
+    @GetMapping("/{inquiryId}")
+    public ResponseEntity getInquiry(@PathVariable(name = "inquiryId") Long inquiryId) {
         GetInquiryDetailServiceDto serviceDto = new GetInquiryDetailServiceDto(inquiryId);
         InquiryDetailResponse inquiry = getInquiryDetailUseCase.findOne(serviceDto);
 
-        model.addAttribute("inquiry", inquiry);
-
-        return "inquiries/detail";
+        return ResponseEntity.ok(inquiry);
     }
 
     // 문의 게시글 삭제
     @PostMapping("/inquiry/{inquiryId}/delete")
-    public String deleteInquiry(@PathVariable(name = "inquiryId") Long inquiryId) {
+    public ResponseEntity deleteInquiry(@PathVariable(name = "inquiryId") Long inquiryId) {
         DeleteInquiryServiceDto serviceDto = new DeleteInquiryServiceDto(inquiryId);
         deleteInquiryUseCase.delete(serviceDto);
 
-        return "redirect:/inquiry";
+        return ResponseEntity.noContent().build();
     }
 }
